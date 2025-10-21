@@ -1,4 +1,4 @@
-/*------------ Анімація мінеткі ------------*/
+/*------------ Анімація мінеткі при запуску сайта 5с ------------*/
 .loading-screen {
     position: fixed;
     top: 0;
@@ -19,8 +19,8 @@
 }
 
 .loading-logo {
-    width: 312px;
-    height: 312px;
+    width: 362px;
+    height: 362px;
     animation: spin 2s linear infinite;
     margin-bottom: 10px;
     border-radius: 50%;
@@ -30,8 +30,8 @@
 }
 
 .loading-bar {
-    width: 200px;
-    height: 8px;
+    width: 400px;
+    height: 10px;
     background: rgba(255,255,255,0.2);
     border-radius: 10px;
     overflow: hidden;
@@ -40,13 +40,13 @@
 }
 
 .loading-text {
-    margin-top: 15px;
+    margin-top: 50px;
     font-size: 32px;
     color: #ccc;
     
 }
 .load-sub {
-    margin-top: 5px;
+    margin-top: 50px;
     font-size: 24px;
     color: #888;
 }
@@ -62,30 +62,37 @@
 
 
 /*------------ Компоненты головки(Header) ------------*/
-.small-logo {
+.small-logo { /* Та сам кнопочка для першого сікрета */
     width: 64px;
     height: 64px;
     border-radius: 50%;
     object-fit: cover;
 }
 .header-title {
+    padding: 10px;
     font-size: 36px;
     font-weight: bold;
-    color: white;
+    color: greenyellow;
+    font-weight: bold;
+    text-shadow: 0 0 5px #14e21b;
     position: absolute;
     font-weight: bold;
     left: 85px;
 }
 
 /*------------ Компоненты Подвала (Footer) ------------*/
-.logo-footer {
+.logo-footer { /* Логотип у футері і тоже скрита кнопка для сікрета */
     width: 48px;
     height: 48px;
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
 }
-
+.vrode { /* Вроді текст на фуртері виділяємо */
+    color: greenyellow;
+    font-weight: bold;
+    text-shadow: 0 0 5px #14e21b;
+}
 
 /*------------ Кнопочка логина ------------*/
 .h-login-btn {
@@ -93,8 +100,8 @@
     display: inline-block;
     font-weight: bold;
     font-size: 18px;
-    color: white;
-    background: #3671fb;
+    color: rgb(0, 0, 0);
+    background:  greenyellow;
     padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
@@ -102,24 +109,16 @@
     border: none;
 }
 
-.h-login-btn::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 10px;
-    padding: 4px; /* толщина рамки */
-    pointer-events: none;
-}
 .h-login-btn:hover {
-    background: #4c7fff;
-    box-shadow: 0 0 5px #2de470;
+    background: rgb(149, 242, 10);
+    box-shadow: 0 0 10px #14e21b;
 }
 
 /*------------ Основа сайта ------------*/
 .obuh-color { /* Snap текст для говна я забыл */
     color: greenyellow;
     font-weight: bold;
-    text-shadow: 0 0 5px #ffffff;
+    text-shadow: 0 0 5px #14e21b;
 }
 .welcome-text {
     font-size: 48px;
@@ -142,22 +141,13 @@
 
 
 
-/*------------ Меню бургер ------------*/
-.menu-toggle {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    position: absolute;
+/*------------ Туалетка фон права екрана ------------*/
+.tyaletka-phone {
+    width: 350px;
+    height: auto;
+    position: fixed;
+    bottom: 20px;
     right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1001;
-}
-
-.menu-toggle .bar {
-    width: 25px;
-    height: 3px;
-    background-color: white;
-    margin: 4px 0;
-    transition: 0.4s;
+    z-index: 1000;
+    animation: float 3s ease-in-out infinite;
 }
