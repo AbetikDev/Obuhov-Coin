@@ -1,0 +1,85 @@
+/* ------------ Основа стилей тута ------------*/
+body {
+    background: linear-gradient(135deg, #202020 0%, #0e0e0e 100%);
+    color: white;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+header {
+    width: 1100px;
+    height: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0 0 55px 55px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+
+/*------------ Нав линки ------------*/
+nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 20px;
+    position: fixed;
+    top: 35px;
+    right: 100px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+    transition: color 0.3s;
+    position: relative;
+}
+
+nav a:hover {
+    color: #26d451;
+    font-weight: bold;
+    text-shadow: 0 0 10px #5feb82;
+
+}
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin-top: 5px;
+    right: 0;
+    background: #26d451;
+    transition: width 0.3s ease;
+}
+nav a:hover::after {
+    width: 100%;
+    left: 0;
+    background: #26d451;
+}
+
+/*------------ ФУТЕР закреплен в низу без рамо просто текст ------------*/
+footer {
+    position: fixed;
+    width: 1100px;
+    height: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 55px 55px 0 0;
+    background-color: #20202068;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
