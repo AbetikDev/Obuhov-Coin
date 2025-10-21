@@ -1,0 +1,31 @@
+{
+  "name": "obuhov-coin",
+  "version": "1.0.0",
+  "description": "Ласкаво просимо в Obuhov Coin — стильний сайт розроблений 2 сеніорами 5 розряду для крипто коіна \"обухов\" з сучасним дизайном.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbetikDev/Obuhov-Coin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AbetikDev/Obuhov-Coin/issues"
+  },
+  "homepage": "https://github.com/AbetikDev/Obuhov-Coin#readme",
+  "devDependencies": {
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
+    "vite": "^7.1.11"
+  }
+}
