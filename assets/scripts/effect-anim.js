@@ -3,7 +3,7 @@
   const coinWrap = document.querySelector('.coin-3d-wrapper');
   const coin = document.querySelector('.coin-image-3d');
   if (coinWrap && coin) {
-    const maxTilt = 12; // 12 градусів прєдєо
+    const maxTilt = 12; // 12 градусів прєдєл
     let timeout;
     const reset = () => {
       //ісход
@@ -27,7 +27,7 @@
     reset();
   }
 
-  // логін батон
+  // логін батон (хуйня красива ой кнопочка)
   const btn = document.querySelector('.h-login-btn');
   if (btn) {
     btn.style.overflow = 'hidden';
