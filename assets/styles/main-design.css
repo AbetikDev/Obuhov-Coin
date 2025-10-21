@@ -18,7 +18,8 @@ header {
     justify-content: space-between;
     padding: 0 20px;
     position: fixed;
-    inset: 0 auto auto 50%;
+    top: 0; /* <-- добавлено */
+    left: 50%; /* <-- фикс для центрирования */
     transform: translateX(-50%);
     box-sizing: border-box;
     background-color: #20202068;
@@ -27,12 +28,17 @@ header {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+main {
+    padding-top: 130px;
+}
+
 @media (max-width: 1200px) {
     header {
         max-width: 100%;
         border-radius: 0;
     }
 }
+
 
 
 
@@ -82,7 +88,7 @@ nav a:hover::after {
     background: #26d451;
 }
 
-/*------------ ФУТЕР закреплен в низу без рамо просто текст ------------*/
+/*------------ ФУТЕР закреплен в низу------------*/
 footer {
     position: fixed;
     max-width: 1100px;
