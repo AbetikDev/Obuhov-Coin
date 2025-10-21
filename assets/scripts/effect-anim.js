@@ -1,56 +1,88 @@
 (() => {
-  // мінєтка наклонілась как в 3д
   const coinWrap = document.querySelector('.coin-3d-wrapper');
   const coin = document.querySelector('.coin-image-3d');
-  if (coinWrap && coin) {
-    const maxTilt = 12; // 12 градусів прєдєо
-    let timeout;
-    const reset = () => {
-      //ісход
-      coin.style.transition = 'transform 200ms ease, filter 200ms ease';
-      coin.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
-      coin.style.filter = 'drop-shadow(0 10px 20px rgba(38,212,81,0.25))';
-      clearTimeout(timeout);
-      timeout = setTimeout(() => { coin.style.transition = ''; }, 220);
-    };
-    coinWrap.addEventListener('mousemove', (e) => {
-      // накланяєм мінєтку по мишкє
-      const r = coinWrap.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width;
-      const y = (e.clientY - r.top) / r.height;
-      const rotY = (x - 0.5) * 2 * maxTilt;
-      const rotX = -(y - 0.5) * 2 * maxTilt;
-      coin.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.03)`;
-      coin.style.filter = 'drop-shadow(0 18px 30px rgba(38,212,81,0.35))';
-    });
-    coinWrap.addEventListener('mouseleave', reset);
-    reset();
-  }
+  if (!coinWrap || !coin) return;
 
-  // логін батон
-  const btn = document.querySelector('.h-login-btn');
-  if (btn) {
-    btn.style.overflow = 'hidden';
-    btn.addEventListener('click', (e) => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const ripple = document.createElement('span');
-      ripple.style.position = 'absolute';
-      ripple.style.left = `${x}px`;
-      ripple.style.top = `${y}px`;
-      ripple.style.width = '10px';
-      ripple.style.height = '10px';
-      ripple.style.borderRadius = '9999px';
-      ripple.style.pointerEvents = 'none';
-      ripple.style.background = 'rgba(255,255,255,0.35)';
-      btn.appendChild(ripple);
-      const maxDim = Math.max(rect.width, rect.height) * 2.2;
-      ripple.animate([
-        { transform: 'translate(-50%,-50%) scale(1)', opacity: 0.6 },
-        { transform: `translate(-50%,-50%) scale(${maxDim / 10})`, opacity: 0 }
-      ], { duration: 600, easing: 'ease-out', fill: 'forwards' });
-      setTimeout(() => ripple.remove(), 620);
-    });
-  }
+  const maxTilt = 12;
+
+  const idleGlow  = { y: 8,  blur: 16, a: 0.18 };
+  const activeGlow = { y: 14, blur: 24, a: 0.26 };
+
+  let target = { rx: 0, ry: 0, s: 1.01, glow: { ...idleGlow } };
+  let state  = { rx: 0, ry: 0, s: 1.01, glow: { ...idleGlow } };
+
+  const amp = 3;
+  const speed = 0.0018;
+  const drift = 0.0007;
+
+  let interacting = false;
+  let idleStart = performance.now();
+  let lastTime = performance.now();
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  const dropShadow = (y, blur, a) =>
+    `drop-shadow(0 ${y.toFixed(1)}px ${blur.toFixed(1)}px rgba(38,212,81,${a.toFixed(3)}))`;
+
+  const damp = (current, target, lambda, dt) =>
+    current + (target - current) * (1 - Math.exp(-lambda * dt));
+
+  const updateIdleTarget = (t) => {
+    const dt = t - idleStart;
+    target.rx = Math.sin(dt * speed) * amp;
+    target.ry = Math.cos(dt * (speed + drift)) * amp;
+    target.s  = 1.01;
+    target.glow = idleGlow;
+  };
+
+  const pointerToTilt = (e) => {
+    const r = coinWrap.getBoundingClientRect();
+    const nx = clamp((e.clientX - r.left) / r.width, 0, 1);
+    const ny = clamp((e.clientY - r.top) / r.height, 0, 1);
+    const ry = (nx - 0.5) * 2 * maxTilt;
+    const rx = -(ny - 0.5) * 2 * maxTilt;
+    return { rx, ry };
+  };
+
+  const tick = (now) => {
+    const dt = Math.min(32, now - lastTime)
+    lastTime = now;
+
+    if (!interacting) updateIdleTarget(now);
+
+    state.rx = damp(state.rx, target.rx, 0.020, dt);
+    state.ry = damp(state.ry, target.ry, 0.020, dt);
+    state.s  = damp(state.s,  target.s,  0.016, dt);
+    state.glow.y    = damp(state.glow.y,    target.glow.y,    0.020, dt);
+    state.glow.blur = damp(state.glow.blur, target.glow.blur, 0.020, dt);
+    state.glow.a    = damp(state.glow.a,    target.glow.a,    0.020, dt);
+
+    coin.style.transform = `rotateX(${state.rx.toFixed(3)}deg) rotateY(${state.ry.toFixed(3)}deg) scale(${state.s.toFixed(3)})`;
+    coin.style.filter = dropShadow(state.glow.y, state.glow.blur, state.glow.a);
+
+    requestAnimationFrame(tick);
+  };
+
+  coinWrap.addEventListener('mouseenter', () => {
+    interacting = true;
+  });
+
+  coinWrap.addEventListener('mousemove', (e) => {
+    interacting = true;
+    const { rx, ry } = pointerToTilt(e);
+    target.rx = rx;
+    target.ry = ry;
+    target.s  = 1.03;
+    target.glow = activeGlow;
+  });
+
+  coinWrap.addEventListener('mouseleave', () => {
+    interacting = false;
+    idleStart = performance.now();
+  });
+
+  requestAnimationFrame((t) => {
+    lastTime = t;
+    idleStart = t;
+    requestAnimationFrame(tick);
+  });
 })();

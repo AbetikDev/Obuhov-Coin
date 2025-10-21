@@ -133,12 +133,13 @@
     text-align: center;
     margin-top: -25px;
 }
-.coin-image- {
+.coin-image-3d {
     width: 365px;
-    height: 365px;
+    height: 355px;
     object-fit: cover;
     margin-top: 30px;
 }
+
 
 
 /*------------ Меню бургер ------------*/
