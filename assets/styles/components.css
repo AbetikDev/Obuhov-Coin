@@ -116,7 +116,7 @@
 }
 
 /*------------ Основа сайта ------------*/
-.obuh-color {
+.obuh-color { /* Snap текст для говна я забыл */
     color: greenyellow;
     font-weight: bold;
     text-shadow: 0 0 5px #ffffff;
@@ -125,7 +125,7 @@
     font-size: 48px;
     color: white;
     text-align: center;
-    margin-top: -450px;
+    margin-top: -300px;
 }
 .intro-text {
     font-size: 18px;
