@@ -93,3 +93,76 @@
 	.loading-logo { width: 160px; height: 160px; }
 	.loading-bar { width: 220px; }
 }
+
+/* Адаптивність для Road Map */
+@media (max-width: 992px) {
+	.road-map {
+		max-width: calc(100% - 32px);
+		padding: 30px 20px;
+	}
+	
+	.road-map-text {
+		font-size: 38px;
+		margin-bottom: 30px;
+	}
+	
+	.done-road,
+	.progres-road,
+	.notdo-road {
+		font-size: 20px;
+		padding: 16px 24px;
+		padding-left: 50px;
+	}
+	
+	.done-road::before,
+	.progres-road::before,
+	.notdo-road::before {
+		left: 16px;
+		font-size: 24px;
+	}
+}
+
+@media (max-width: 600px) {
+	.road-map {
+		padding: 20px 16px;
+		gap: 20px;
+	}
+	
+	.road-map-text {
+		font-size: 32px;
+		margin-bottom: 20px;
+	}
+	
+	.done-road,
+	.progres-road,
+	.notdo-road {
+		font-size: 16px;
+		padding: 14px 20px;
+		padding-left: 45px;
+	}
+	
+	.done-road::before,
+	.progres-road::before,
+	.notdo-road::before {
+		left: 14px;
+		font-size: 20px;
+	}
+	
+	.notdo-road::before {
+		font-size: 18px;
+	}
+}
+
+@media (max-width: 400px) {
+	.road-map-text {
+		font-size: 28px;
+	}
+	
+	.done-road,
+	.progres-road,
+	.notdo-road {
+		font-size: 14px;
+		padding: 12px 16px;
+		padding-left: 40px;
+	}
+}

@@ -272,7 +272,6 @@ a:has(.buy-now-btn) {
     text-shadow: 0 0 8px rgba(20, 226, 27, 0.8);
 }
 
-/* Поважаємо налаштування зменшення анімацій */
 @media (prefers-reduced-motion: reduce) {
     .down-arrow {
         animation: none;
@@ -280,3 +279,137 @@ a:has(.buy-now-btn) {
     }
 }
 
+
+/*---------- RoadMAP web-site (оновлений варіант) ------------*/
+.road-map-text {
+    text-align: center;
+    font-size: 48px;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(20, 226, 27, 0.5);
+}
+
+/* Контейнер */
+.road-map {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(173, 255, 47, 0.3);
+    box-shadow: 0 4px 20px rgba(173, 255, 47, 0.2);
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.road-map-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    border-radius: 15px;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Блоки */
+.done-road,
+.progres-road,
+.notdo-road {
+    position: relative;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 18px 25px;
+    padding-left: 55px;
+    border-radius: 12px;
+    z-index: 1;
+    width: 48%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.done-road:hover,
+.progres-road:hover,
+.notdo-road:hover {
+    transform: translateY(-3px);
+}
+
+/* Іконки */
+.done-road::before,
+.progres-road::before,
+.notdo-road::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+}
+
+/* Статуси */
+.done-road {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.05));
+    border: 2px solid rgba(34, 197, 94, 0.5);
+    color: #4ade80;
+    box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2);
+}
+.done-road::before {
+    content: '✓';
+    color: #4ade80;
+    font-size: 30px;
+}
+.done-road:hover {
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+}
+
+/* В процесі */
+.progres-road {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.05));
+    border: 2px solid rgba(251, 191, 36, 0.5);
+    color: #fbbf24;
+    box-shadow: 0 4px 10px rgba(251, 191, 36, 0.2);
+    animation: pulse-progress 2s ease-in-out infinite;
+}
+.progres-road::before {
+    content: '⟳';
+    color: #fbbf24;
+    animation: spin-slow 3s linear infinite;
+}
+.progres-road:hover {
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+}
+
+/* Не зроблено */
+.notdo-road {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.05));
+    border: 2px solid rgba(239, 68, 68, 0.5);
+    color: #f87171;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+}
+.notdo-road::before {
+    content: '🔒';
+    font-size: 24px;
+}
+.notdo-road:hover {
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* Анімації */
+@keyframes pulse-progress {
+    0%, 100% {
+        box-shadow: 0 4px 10px rgba(251, 191, 36, 0.2);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(251, 191, 36, 0.4);
+    }
+}
+@keyframes spin-slow {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to { transform: translateY(-50%) rotate(360deg); }
+}
