@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 Секретна кінцівка - Obuhov Coin</title>
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            max-width: 900px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Анімована монетка */
+        .coin-wrapper {
+            margin: 0 auto 40px;
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        .coin-icon {
+            width: 100%;
+            height: 100%;
+            animation: spin3d 4s linear infinite, float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+        }
+
+        @keyframes spin3d {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Заголовок */
+        .title {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: goldShine 3s ease-in-out infinite;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes goldShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            color: #FFD700;
+            margin-bottom: 30px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 165, 0, 0.8);
+            }
+        }
+
+        /* Текст тролінгу */
+        .troll-text {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px auto;
+            max-width: 700px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .troll-text p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        /* Нагорода */
+        .reward-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+            border: 3px solid #FFD700;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        .reward-title {
+            font-size: 2rem;
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+
+        .reward-amount {
+            font-size: 3.5rem;
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Кнопка */
+        .back-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #000;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Конфетті */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            animation: confetti-fall 5s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                top: -10%;
+                opacity: 1;
+            }
+            100% {
+                top: 110%;
+                opacity: 0;
+            }
+        }
+
+        /* Секретний код */
+        .secret-code {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px dashed #FFD700;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px auto;
+            font-size: 1.5rem;
+            color: #00ff00;
+            letter-spacing: 3px;
+            max-width: 500px;
+        }
+
+        /* Емоджі дощ */
+        .emoji-rain {
+            position: fixed;
+            font-size: 2rem;
+            animation: fall 8s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -10%;
+                opacity: 1;
+                transform: rotate(0deg);
+            }
+            100% {
+                top: 110%;
+                opacity: 0;
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Анімована монетка -->
+        <div class="coin-wrapper">
+            <img src="assets/images/icons/logo.png" alt="Obuhov Coin" class="coin-icon">
+        </div>
+
+        <!-- Заголовок -->
+        <h1 class="title">🎉 ВІТАЄМО! 🎉</h1>
+        <p class="subtitle">Ви знайшли всі пасхалки!</p>
+
+        <!-- Тролінг текст -->
+        <div class="troll-text">
+            <p>
+                Щиро вітаємо! Ви <span class="highlight">справжній детектив</span> і знайшли всі секретні пасхалки на нашому сайті! 🕵️
+            </p>
+            <p>
+                За ваші старання і цікавість ми нагороджуємо вас...
+            </p>
+            <p class="highlight" style="font-size: 2rem;">
+                🥁 Барабанна дробь... 🥁
+            </p>
+            <p>
+                ...абсолютно <span class="highlight">НІЧИМ!</span> 😂
+            </p>
+            <p>
+                Бо наш девіз: <br>
+                <span class="highlight">"У вас проблема? Вона ваша (не наша)!"</span>
+            </p>
+        </div>
+
+        <!-- Фейкова нагорода -->
+        <div class="reward-box">
+            <div class="reward-title">🎁 Ваша нагорода:</div>
+            <div class="reward-amount">0.00 OBUHOV</div>
+            <p style="color: #FFD700; margin-top: 15px; font-size: 1.1rem;">
+                (але зате ви круті і знайшли всі пасхалки! 🔥)
+            </p>
+        </div>
+
+        <!-- Секретний "код" -->
+        <div class="secret-code">
+            Кто прочитав це той лох 😂
+        </div>
+
+        <!-- Додатковий тролінг -->
+        <div class="troll-text" style="margin-top: 30px;">
+            <p>
+                <strong>P.S.</strong> Якщо ви думали, що отримаєте справжню криптовалюту за пошук пасхалок на трольному сайті... 
+            </p>
+            <p class="highlight" style="font-size: 1.8rem;">
+                То ви були праві! 🎊
+            </p>
+            <p style="font-size: 2.5rem; margin: 20px 0;">
+                😏
+            </p>
+            <p>
+                Але не сьогодні, друже! Може наступного разу... 
+                <br>або ніколи... 
+                <br>а може й зараз хтось знає? 🤷‍♂️
+            </p>
+        </div>
+
+        <!-- Кнопка назад -->
+        <a href="index.html" class="back-btn">🏠 Повернутися на головну</a>
+
+        <!-- Повідомлення -->
+        <p style="color: #888; margin-top: 40px; font-size: 0.9rem;">
+            Дякуємо, що граєте з нами! ❤️ <br>
+            ~ Команда Obuhov Coin ~
+        </p>
+    </div>
+
+    <script>
+        // Генерація конфеті
+        function createConfetti() {
+            const colors = ['#FFD700', '#FFA500', '#FF69B4', '#00CED1', '#FF6347', '#32CD32'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 5 + 's';
+                    confetti.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 8000);
+                }, i * 100);
+            }
+        }
+
+        // Генерація емоджі дощу
+        function createEmojiRain() {
+            const emojis = ['🎉', '🎊', '🏆', '💰', '💎', '⭐', '✨', '🔥', '👑', '🎁'];
+            
+            setInterval(() => {
+                const emoji = document.createElement('div');
+                emoji.className = 'emoji-rain';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                document.body.appendChild(emoji);
+                
+                setTimeout(() => emoji.remove(), 8000);
+            }, 800);
+        }
+
+        // Запуск анімацій
+        window.addEventListener('load', () => {
+            createConfetti();
+            createEmojiRain();
+            
+            // Повторюємо конфеті кожні 10 секунд
+            setInterval(createConfetti, 10000);
+        });
+
+        // Секретний чіт-код (просто для фану)
+        let konamiCode = [];
+        const konamiTarget = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        
+        window.addEventListener('keydown', (e) => {
+            konamiCode.push(e.key);
+            konamiCode = konamiCode.slice(-10);
+            
+            if (JSON.stringify(konamiCode) === JSON.stringify(konamiTarget)) {
+                alert('🎮 Konami Code активовано! Але це все одно нічого не змінює 😂');
+                // Супер-швидке обертання монетки
+                document.querySelector('.coin-icon').style.animation = 'spin3d 0.5s linear infinite, float 3s ease-in-out infinite';
+            }
+        });
+    </script>
+</body>
+</html>
