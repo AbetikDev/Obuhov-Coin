@@ -177,6 +177,10 @@
     display: flex;
     overflow: hidden;
 }
+.reclama-bg {
+    width: 900px;
+    height: 155px;
+}
 .reclama-H3 {
     position: absolute;
     top: 8%;
@@ -206,6 +210,8 @@
     fill: greenyellow;
 }
 
+
+
 /*------------ Buy token button ------------*/
 a:has(.buy-now-btn) {
     text-decoration: none;
@@ -232,7 +238,9 @@ a:has(.buy-now-btn) {
     color: black;
 }
 
-/*------------ Стрелка вниз а анімацією по центру пульсации ------------*/
+/*------------ Стрелка вниз а анімацією по центру пульсації Роблю в комент бо логіка фігня переробиш ------------*/
+/*
+
 .down-arrow {
     position: absolute;
     bottom: 20px;
@@ -251,7 +259,6 @@ a:has(.buy-now-btn) {
     transform: translateX(-50%) translateY(-4px);
 }
 
-/* Анімація підскакування стрілки вниз */
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
         transform: translateX(-50%) translateY(0);
@@ -264,7 +271,6 @@ a:has(.buy-now-btn) {
     }
 }
 
-/* Фокус-стиль для клавіатурної навігації */
 .down-arrow:focus-visible {
     outline: none;
     color: rgb(194, 247, 115);
@@ -278,6 +284,9 @@ a:has(.buy-now-btn) {
         transition: none;
     }
 }
+
+/*
+
 
 
 /*---------- RoadMAP web-site (оновлений варіант) ------------*/
@@ -393,7 +402,7 @@ a:has(.buy-now-btn) {
     box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
 }
 .notdo-road::before {
-    content: '🔒';
+    content: '✗';
     font-size: 24px;
 }
 .notdo-road:hover {
@@ -412,4 +421,116 @@ a:has(.buy-now-btn) {
 @keyframes spin-slow {
     from { transform: translateY(-50%) rotate(0deg); }
     to { transform: translateY(-50%) rotate(360deg); }
+}
+
+
+
+/*------------ About Section Design ------------*/
+.about-box {
+    max-width: 900px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    margin: 0 auto;
+    /* тоже у комент мб надо буде
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(173, 255, 47, 0.3);
+    box-shadow: 0 4px 20px rgba(173, 255, 47, 0.2);
+    */
+}
+.about-logo {
+    font-size: 46px;
+    text-align: center;
+}
+
+.our-slogan {
+    font-size: 18px;
+    color: greenyellow;
+    text-align: center;
+    text-shadow: 0 0 10px #14e21b;
+    margin-top: 10px;
+}
+
+
+/*------------ Obuhov coin TEAM ------------*/
+.team-title {
+    text-align: center;
+    font-size: 48px;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 0 0 2px rgba(20, 226, 27, 0.5);
+}
+.team-members {
+    max-width: 900px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(173, 255, 47, 0.3);
+    box-shadow: 0 4px 20px rgba(173, 255, 47, 0.2);
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+}
+.team-member {
+    width: 32%;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    padding: 5px;
+    box-shadow: 0 4px 10px rgba(20, 226, 27, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.team-member-info {
+    background-color: #0b0b0b4f;
+    height: max-content;
+    border-radius: 15px;
+    padding: 5px;
+    margin: 10px;
+    text-align: center;
+    color: white;
+}
+.team-member-name {
+    font-size: 38px;
+    font-weight: bold;
+}
+.team-member-role {
+    font-size: 20px;
+    color: greenyellow;
+    text-shadow: 0 0 5px #14e21b;
+}
+
+
+/*------------ Price and draw graphics Selection ------------*/
+.price-title-logo {
+    text-align: center;
+    font-size: 46px;
+    color: white;
+    
+}
+.price-graph-frame {
+    max-width: 900px;
+    height: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(173, 255, 47, 0.3);
+    box-shadow: 0 4px 20px rgba(173, 255, 47, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price-logo-2d {
+    width: 256px;
+    height: 256px;
+    object-fit: cover;
+    margin-top: 30px;
 }

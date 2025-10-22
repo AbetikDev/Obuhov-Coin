@@ -1,5 +1,6 @@
+// Макс тут можна було зхробити бетер
 (() => {
-  const scrollToEl = (el, opt = {}) => { //скорлл плавній
+  const scrollToEl = (el, opt = {}) => { //скорлл плавній (не дуже плавний перероби)
     const header = document.querySelector('header');
     const rect = el.getBoundingClientRect();
     const top = window.pageYOffset + rect.top;

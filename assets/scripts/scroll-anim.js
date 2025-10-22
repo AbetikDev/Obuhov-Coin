@@ -1,4 +1,6 @@
-//jenia eto prosto top
+//jenia eto prosto top vot realno vot imba
+
+// maxim logica shit peredelai mb bolshe plavnosti попробуй зробить коли скролл внизз усі елементи анімовані
 
 
 (() => { 
