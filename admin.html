@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Адмін-панель - Obuhov Coin</title>
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/styles/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Шапка адмін-панелі -->
+        <div class="admin-header">
+            <div>
+                <h1>🛡️ Адмін-панель</h1>
+                <p class="admin-info">Ласкаво просимо, <span id="admin-name">Адміністратор</span> <span style="color: #4caf50; font-size: 0.85em;">● Live</span></p>
+            </div>
+            <div class="admin-actions">
+                <a href="index.html" class="admin-btn">← Головна</a>
+                <button class="admin-btn logout-btn" onclick="handleLogout()">Вийти</button>
+            </div>
+        </div>
+
+        <!-- Управління курсом -->
+        <div class="rate-section">
+            <div class="rate-box">
+                <h3>💱 Курс валюти</h3>
+                <p class="current-rate">Поточний курс: <span id="admin-rate">$2.65</span> за 1 OBUHOV</p>
+                <div class="rate-form">
+                    <input type="number" id="new-rate" placeholder="Новий курс" step="0.01" min="0.01">
+                    <button class="rate-btn" onclick="updateRate()">Оновити курс</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <p class="stat-label">Всього користувачів</p>
+                <h3 class="stat-value" id="total-users">0</h3>
+            </div>
+            
+            <div class="stat-card">
+                <p class="stat-label">Всього OBUHOV</p>
+                <h3 class="stat-value" id="total-coins">0</h3>
+            </div>
+            
+            <div class="stat-card">
+                <p class="stat-label">Всього USD</p>
+                <h3 class="stat-value" id="total-usd">$0</h3>
+            </div>
+            
+            <div class="stat-card">
+                <p class="stat-label">Транзакцій</p>
+                <h3 class="stat-value" id="total-transactions">0</h3>
+            </div>
+        </div>
+
+        <!-- Користувачі -->
+        <div class="users-section">
+            <div class="section-header">
+                <h2 class="section-title">Управління користувачами</h2>
+                <div class="search-box">
+                    <input type="text" id="search-input" class="search-input" placeholder="🔍 Пошук користувача..." oninput="filterUsers()">
+                </div>
+            </div>
+
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>Аватар</th>
+                        <th>Ім'я користувача</th>
+                        <th>Роль</th>
+                        <th>OBUHOV</th>
+                        <th>USD</th>
+                        <th>Дата реєстрації</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody id="users-table-body">
+                    <!-- Користувачі будуть додані динамічно -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Модальне вікно редагування користувача -->
+    <div id="edit-modal" class="edit-modal">
+        <div class="edit-modal-content">
+            <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            <h2 class="modal-title">Редагування користувача</h2>
+            
+            <form id="edit-user-form" onsubmit="saveUserChanges(event)">
+                <input type="hidden" id="edit-username">
+                
+                <div class="form-group">
+                    <label for="edit-coins">Кількість OBUHOV</label>
+                    <input type="number" id="edit-coins" min="0" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-usd">Кількість USD</label>
+                    <input type="number" id="edit-usd" min="0" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-role">Роль</label>
+                    <select id="edit-role">
+                        <option value="false">Користувач</option>
+                        <option value="true">Адміністратор</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-save">💾 Зберегти зміни</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/scripts/api.js"></script>
+    <script src="assets/scripts/auth.js"></script>
+    <script src="assets/scripts/currency.js"></script>
+    <script src="assets/scripts/admin.js"></script>
+</body>
+</html>

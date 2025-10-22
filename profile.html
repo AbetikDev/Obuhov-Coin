@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Профіль - Obuhov Coin</title>
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/styles/profile.css">
+</head>
+<body>
+    <div class="profile-container">
+        <!-- Шапка профілю -->
+        <div class="profile-header">
+            <button class="back-btn" onclick="window.location.href='index.html'">← Головна</button>
+            <button class="logout-btn" onclick="handleLogout()">Вийти</button>
+            
+            <img src="assets/images/icons/logo-maga.png" alt="Avatar" class="profile-avatar">
+            <h1 class="profile-username" id="username">Завантаження...</h1>
+            <p class="profile-status">Учасник з <span id="member-since"></span></p>
+        </div>
+
+        <!-- Баланси -->
+        <div class="balance-section">
+            <p class="balance-title">Ваші баланси</p>
+            <div class="balance-grid">
+                <div class="balance-item">
+                    <img src="assets/images/icons/logo.png" alt="Coin" class="coin-icon">
+                    <div class="balance-info">
+                        <span class="balance-label">OBUHOV</span>
+                        <span class="balance-value" id="balance-coins">0.00</span>
+                        <span class="balance-frozen" id="frozen-coins"></span>
+                    </div>
+                </div>
+                <div class="balance-item usd">
+                    <span class="usd-icon">💵</span>
+                    <div class="balance-info">
+                        <span class="balance-label">USD</span>
+                        <span class="balance-value" id="balance-usd">$0.00</span>
+                        <span class="balance-frozen" id="frozen-usd"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="exchange-rate">
+                <p>💱 Поточний курс: <span id="current-rate">$2.65</span> за 1 OBUHOV</p>
+            </div>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p class="stat-label">Всього транзакцій</p>
+                <h3 class="stat-value" id="total-transactions">0</h3>
+            </div>
+            
+            <div class="stat-card">
+                <p class="stat-label">Дата реєстрації</p>
+                <h3 class="stat-value" id="registration-date">-</h3>
+            </div>
+            
+            <div class="stat-card">
+                <p class="stat-label">Статус акаунту</p>
+                <h3 class="stat-value" id="account-status">Активний</h3>
+            </div>
+        </div>
+
+        <!-- Дії -->
+        <div class="actions-section">
+            <h3 class="actions-title">Операції</h3>
+            <div class="action-tabs">
+                <button class="tab-btn active" onclick="switchTab('instant')">⚡ Швидка торгівля</button>
+                <button class="tab-btn" onclick="switchTab('market')">📊 Ринок ордерів</button>
+                <button class="tab-btn" onclick="switchTab('transfer')">💸 Переказ</button>
+                <button class="tab-btn" onclick="switchTab('history')">📜 Історія</button>
+            </div>
+
+            <!-- Швидка торгівля -->
+            <div id="tab-instant" class="tab-content active">
+                <div class="trade-container">
+                    <div class="trade-box">
+                        <h4>💰 Купити OBUHOV</h4>
+                        <div class="form-group">
+                            <label>Сума в USD</label>
+                            <input type="number" id="buy-usd" placeholder="0.00" step="0.01" min="0.01" oninput="calculateBuy()">
+                        </div>
+                        <div class="form-group">
+                            <label>Отримаєте OBUHOV</label>
+                            <input type="number" id="buy-coins-result" placeholder="0.00" readonly>
+                        </div>
+                        <p class="fee-info">💸 Комісія: 0.5%</p>
+                        <button class="action-btn buy" onclick="executeBuy()">Купити</button>
+                    </div>
+
+                    <div class="trade-box">
+                        <h4>💵 Продати OBUHOV</h4>
+                        <div class="form-group">
+                            <label>Кількість OBUHOV</label>
+                            <input type="number" id="sell-coins" placeholder="0.00" step="0.01" min="0.01" oninput="calculateSell()">
+                        </div>
+                        <div class="form-group">
+                            <label>Отримаєте USD</label>
+                            <input type="number" id="sell-usd-result" placeholder="0.00" readonly>
+                        </div>
+                        <p class="fee-info">💸 Комісія: 0.5%</p>
+                        <button class="action-btn sell" onclick="executeSell()">Продати</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ринок ордерів -->
+            <div id="tab-market" class="tab-content">
+                <div class="market-container">
+                    <div class="market-box">
+                        <h4>📈 Створити ордер на купівлю</h4>
+                        <div class="form-group">
+                            <label>Кількість OBUHOV</label>
+                            <input type="number" id="order-buy-coins" placeholder="0.00" step="0.01" min="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Ціна за 1 OBUHOV (USD)</label>
+                            <input type="number" id="order-buy-price" placeholder="0.00" step="0.01" min="0.01">
+                        </div>
+                        <p class="total-info">Загальна вартість: $<span id="buy-total">0.00</span></p>
+                        <button class="action-btn buy" onclick="createBuyOrderUI()">Створити ордер</button>
+                    </div>
+
+                    <div class="market-box">
+                        <h4>📉 Створити ордер на продаж</h4>
+                        <div class="form-group">
+                            <label>Кількість OBUHOV</label>
+                            <input type="number" id="order-sell-coins" placeholder="0.00" step="0.01" min="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Ціна за 1 OBUHOV (USD)</label>
+                            <input type="number" id="order-sell-price" placeholder="0.00" step="0.01" min="0.01">
+                        </div>
+                        <p class="total-info">Отримаєте: $<span id="sell-total">0.00</span></p>
+                        <button class="action-btn sell" onclick="createSellOrderUI()">Створити ордер</button>
+                    </div>
+                </div>
+
+                <!-- Активні ордери -->
+                <div class="my-orders">
+                    <h4>📋 Мої активні ордери</h4>
+                    <div id="my-orders-list"></div>
+                </div>
+
+                <!-- Ринкові ордери -->
+                <div class="market-orders">
+                    <h4>🌍 Ринкові ордери</h4>
+                    <div class="orders-grid">
+                        <div class="orders-column">
+                            <h5 class="buy-header">Купівля (Bid)</h5>
+                            <div id="market-buy-orders"></div>
+                        </div>
+                        <div class="orders-column">
+                            <h5 class="sell-header">Продаж (Ask)</h5>
+                            <div id="market-sell-orders"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Переказ -->
+            <div id="tab-transfer" class="tab-content">
+                <div class="transfer-container">
+                    <h4>💸 Переказ OBUHOV</h4>
+                    <div class="form-group">
+                        <label>Отримувач (ім'я користувача)</label>
+                        <input type="text" id="transfer-to" placeholder="username" maxlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Кількість OBUHOV</label>
+                        <input type="number" id="transfer-amount" placeholder="0.00" step="0.01" min="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Примітка (необов'язково)</label>
+                        <input type="text" id="transfer-note" placeholder="Для чого переказ?" maxlength="100">
+                    </div>
+                    <p class="fee-info">💸 Комісія: 1% | Отримувач отримає: <span id="transfer-received">0.00</span> OBUHOV</p>
+                    <button class="action-btn transfer" onclick="executeTransfer()">Переказати</button>
+                </div>
+            </div>
+
+            <!-- Історія -->
+            <div id="tab-history" class="tab-content">
+                <h4>📜 Історія транзакцій</h4>
+                <div id="transactions-list"></div>
+            </div>
+        </div>
+
+        <!-- Повернутися -->
+        <a href="index.html" class="back-btn">← Повернутися на головну</a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/scripts/api.js"></script>
+    <script src="assets/scripts/auth.js"></script>
+    <script src="assets/scripts/currency.js"></script>
+    <script src="assets/scripts/profile.js"></script>
+</body>
+</html>
