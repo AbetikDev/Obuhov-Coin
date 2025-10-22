@@ -13,7 +13,7 @@
     const t0 = performance.now();
     const step = (now) => {
       const t = Math.min(1, (now - t0) / duration);
-      const v = ease(t)
+      const v = ease(t);
       window.scrollTo(0, Math.round(start + distance * v));
       if (t < 1) requestAnimationFrame(step);
     };
