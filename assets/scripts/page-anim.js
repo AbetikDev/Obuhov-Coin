@@ -5,7 +5,19 @@
     const rect = el.getBoundingClientRect();
     const top = window.pageYOffset + rect.top;
     const offset = header ? header.offsetHeight + 20 : 0; //шоб хедер не прятався
-    window.scrollTo({ top: Math.max(0, top - offset), behavior: opt.behavior || 'smooth' });
+    const target = Math.max(0, top - offset);
+    const start = window.pageYOffset;
+    const distance = target - start;
+    const duration = Number(opt.duration || 700);
+    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const t0 = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / duration);
+      const v = ease(t);
+      window.scrollTo(0, Math.round(start + distance * v));
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
   };
 
   document.addEventListener('DOMContentLoaded', () => {
