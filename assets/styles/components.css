@@ -159,6 +159,18 @@
     transform: translateZ(0);
 }
 
+.tyaletka-phone-l {
+    width: 350px;
+    height: auto;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    animation: float 3s ease-in-out infinite;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
 /*------------ Реклама фрейм внизу ------------*/
 .reclama-H2 {
         text-align: center;
@@ -459,6 +471,7 @@ a:has(.buy-now-btn) {
     text-align: center;
     font-size: 48px;
     color: white;
+
     margin-bottom: 10px;
     text-shadow: 0 0 2px rgba(20, 226, 27, 0.5);
 }
@@ -509,13 +522,13 @@ a:has(.buy-now-btn) {
 /*------------ Price and draw graphics Selection ------------*/
 .price-title-logo {
     text-align: center;
-    font-size: 46px;
+    font-size: 48px;
     color: white;
     
 }
 .price-graph-frame {
     max-width: 900px;
-    height: 400px;
+    height: 416px;
     margin: 0 auto;
     padding: 20px;
     border-radius: 15px;
@@ -527,10 +540,52 @@ a:has(.buy-now-btn) {
     flex-direction: column;
     align-items: center;
 }
-
+.online-price {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 24px;
+    color: white;
+}
 .price-logo-2d {
     width: 256px;
     height: 256px;
     object-fit: cover;
     margin-top: 30px;
+}
+.current-price-text {
+    font-size: 28px;
+    margin-top: 10px;
+}
+.price-value {
+    color: greenyellow;
+    font-weight: bold;
+    text-shadow: 0 0 5px #14e21b;
+}
+/* Анімація обертання КОІНА */
+.price-logo-2d {
+    animation: spin 10s linear infinite;
+}
+
+
+
+/*------------ Go to top button ------------*/
+.go-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: greenyellow;
+    color: black;
+    font-weight: semibold;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px #14e21b;
+    transition: background 0.3s, box-shadow 0.3s;
+    z-index: 1000;
 }
