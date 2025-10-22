@@ -1,3 +1,25 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: black;
+    color: #f5f5f5;
+    text-align: center;
+}
+.back {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.back:hover {
+    background-color: #6c6c6c;
+}
 /* Хз шо тут писало ии для хз чого (не трогать) */
 
 .center-screen {
