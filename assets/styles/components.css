@@ -167,8 +167,8 @@
         margin-bottom: 20px;
 }
 .reclama-frame {
-    width: 1100px;
-    height: 200px;
+    width: 900px;
+    height: 155px;
     border-radius: 40px;
     border: 1px solid greenyellow;
     position: relative;
@@ -179,7 +179,7 @@
 }
 .reclama-H3 {
     position: absolute;
-    top: 20%;
+    top: 8%;
     left: 30px;
     font-size: 40px;
     color: white;
@@ -205,3 +205,78 @@
     transform: translateY(-50%);
     fill: greenyellow;
 }
+
+/*------------ Buy token button ------------*/
+a:has(.buy-now-btn) {
+    text-decoration: none;
+}
+
+.buy-now-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 15px 30px;
+    font-size: 24px;
+    width: 300px;
+    font-weight: bold;
+    color: rgb(221, 221, 221);
+    background: rgba(172, 255, 47, 0);
+    border-radius: 10px;
+    cursor: pointer;
+    border:#14e21b 2px solid;
+    box-shadow: 0 0 10px #14e21b;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+.buy-now-btn:hover {
+    background: greenyellow;
+    box-shadow: 0 0 20px #ffffff;
+    color: black;
+}
+
+/*------------ Стрелка вниз а анімацією по центру пульсации ------------*/
+.down-arrow {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 48px;
+    color: white;
+    animation: bounce 2s ease-in-out infinite;
+    transition: color 0.2s ease, transform 0.2s ease;
+    will-change: transform, color;
+    backface-visibility: hidden;
+    text-shadow: 0 0 10px rgba(20, 226, 27, 0.8);
+}
+.down-arrow:hover {
+    color: greenyellow;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* Анімація підскакування стрілки вниз */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-12px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-6px);
+    }
+}
+
+/* Фокус-стиль для клавіатурної навігації */
+.down-arrow:focus-visible {
+    outline: none;
+    color: rgb(194, 247, 115);
+    transform: translateX(-50%) translateY(-4px);
+    text-shadow: 0 0 8px rgba(20, 226, 27, 0.8);
+}
+
+/* Поважаємо налаштування зменшення анімацій */
+@media (prefers-reduced-motion: reduce) {
+    .down-arrow {
+        animation: none;
+        transition: none;
+    }
+}
+
