@@ -32,6 +32,7 @@
     "cors": "^2.8.5",
     "experss": "^0.0.1-security",
     "express": "^5.1.0",
+    "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
   }
 }
