@@ -11,6 +11,8 @@
 	justify-content: space-between;
 	cursor: pointer;
 	z-index: 1100;
+	position: absolute;
+	right: 105px;
 	transition: transform 0.3s ease;
 }
 
