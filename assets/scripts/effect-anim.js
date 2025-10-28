@@ -27,7 +27,7 @@
     reset();
   }
 
-  // логін батон (хуйня красива ой кнопочка)
+  // логін батон (хуйня крива ой кнопочка)
   const btn = document.querySelector('.h-login-btn');
   if (btn) {
     btn.style.overflow = 'hidden';

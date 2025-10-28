@@ -1,5 +1,5 @@
 // API клієнт для роботи з сервером
-const API_URL = 'http://176.36.103.4:28015/api';
+const API_URL = 'http://localhost:28015/api';
 
 // Клас для роботи з API
 class API {
