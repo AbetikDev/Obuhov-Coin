@@ -128,7 +128,7 @@ node server.js
 
 ### 2. Відкрийте сайт у 2 браузерах:
 - Chrome: http://localhost:28015
-- Firefox: http://localhost:28015
+- EDGE: http://localhost:28015
 
 ### 3. Зареєструйте користувача в Chrome
 
