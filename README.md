@@ -19,10 +19,12 @@
 
 ### Frontend (Клієнт)
 - **HTML/CSS/JavaScript** - Vanilla JavaScript (без фреймворків)
-- **API Client** (`assets/scripts/api.js`) - REST API обгортка
+- **API Client** (`assets/scripts/api`) - REST API обгортка
 - **Сторінки**:
   - `index.html` - Головна сторінка + логін
   - `profile.html` - Профіль користувача
+  - `clicker.html` - Гра клікер для заробітку коїнів
+  - `birja.html` - Міні біржа коіна
   - `admin.html` - Панель адміністратора
 
 ### Backend (Сервер)

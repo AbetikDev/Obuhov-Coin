@@ -241,7 +241,7 @@
             <br>
                 <div class="online-price">
                     <img src="assets/images/icons/logo-2d.png" alt="2d logo for price" class="price-logo-2d">
-                    <h3 class="current-price-text">Current Price: <span class="price-value">$2.65</span> | 1 OBUHOV</h3>
+                    <h3 class="current-price-text">Current Price: <span class="price-value" id="current-price">$2.65</span> | 1 OBUHOV</h3>
                 </div>
             <br>
                 <div class="price-graph-frame">
@@ -275,5 +275,74 @@
     <script src="assets/scripts/frontend/scroll-anim.js"></script>
     <script src="assets/scripts/frontend/page-anim.js"></script>
     <script src="assets/scripts/secret.js"></script>
+    
+    <!-- Скрипт для оновлення курсу -->
+    <script>
+        // Функція для оновлення курсу на головній сторінці
+        async function updatePriceOnHomePage() {
+            try {
+                const priceElement = document.getElementById('current-price');
+                if (priceElement) {
+                    // Індикатор завантаження
+                    priceElement.classList.add('updating');
+                    priceElement.textContent = 'Завантаження...';
+                    
+                    const rate = await API.getExchangeRate();
+                    
+                    // Оновлюємо курс з анімацією
+                    setTimeout(() => {
+                        priceElement.textContent = '$' + rate.toFixed(2);
+                        priceElement.classList.remove('updating');
+                        
+                        // Короткий ефект при оновленні
+                        priceElement.style.transform = 'scale(1.1)';
+                        setTimeout(() => {
+                            priceElement.style.transform = 'scale(1)';
+                        }, 200);
+                    }, 500);
+                }
+            } catch (error) {
+                console.error('Помилка оновлення курсу:', error);
+                const priceElement = document.getElementById('current-price');
+                if (priceElement) {
+                    priceElement.classList.remove('updating');
+                    priceElement.textContent = '$2.65'; // Fallback курс
+                }
+            }
+        }
+        
+        // Індикатор статусу підключення до API
+        async function showConnectionStatus() {
+            try {
+                const isConnected = await API.checkConnection();
+                const priceElement = document.getElementById('current-price');
+                
+                if (!isConnected && priceElement) {
+                    priceElement.style.color = '#ff6b6b';
+                    priceElement.title = 'Сервер недоступний - показано статичний курс';
+                } else if (priceElement) {
+                    priceElement.style.color = '';
+                    priceElement.title = 'Курс оновлюється з сервера';
+                }
+            } catch (error) {
+                console.error('Помилка перевірки підключення:', error);
+            }
+        }
+        
+        // Ініціалізація при завантаженні сторінки
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Перевірка підключення до API
+            await showConnectionStatus();
+            
+            // Початкове оновлення курсу
+            await updatePriceOnHomePage();
+            
+            // Автоматичне оновлення кожні 30 секунд
+            setInterval(async () => {
+                await showConnectionStatus();
+                await updatePriceOnHomePage();
+            }, 30000);
+        });
+    </script>
 </body>
 </html>
