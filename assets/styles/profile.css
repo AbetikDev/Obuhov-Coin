@@ -110,7 +110,6 @@ body {
 .back-btn:hover {
     background: rgba(38, 212, 81, 0.3);
     transform: translateY(-2px);
-}
     padding: 10px 20px;
     border-radius: 10px;
     cursor: pointer;
@@ -664,8 +663,9 @@ body {
     }
 
     .logout-btn {
-        position: static;
-        width: 100%;
+        position: absolute;
+        width: 125px;
+        top: 0.5px;
         margin-top: 20px;
     }
 
@@ -690,3 +690,21 @@ body {
         grid-template-columns: 1fr;
     }
 }
+    .mine-btn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(38, 212, 81, 0.2);
+        border: 1px solid rgba(38, 212, 81, 0.5);
+        color: #26d451;
+        padding: 10px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .mine-btn:hover {
+        background: rgba(38, 212, 81, 0.3);
+        transform: translateY(-2px);
+    }

@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Запуск автооновлення
 function startAutoUpdate() {
-    // Оновлення кожні 5 секунд
+    // Оновлення кожні 15 секунд для адмін-панелі
     autoUpdateInterval = setInterval(async () => {
         await loadStats();
         await loadUsersTable();
-    }, 5000);
+    }, 15000);
 }
 
 // Зупинка автооновлення
@@ -53,11 +53,19 @@ async function loadStats() {
         // Отримуємо всіх користувачів з API
         const usersArray = await API.getAllUsers();
         
-        // Поточний курс
+        // Поточний курс з API
         const rateElement = document.getElementById('admin-rate');
         if (rateElement) {
-            const rate = getExchangeRate();
+            const rate = await API.getExchangeRate();
             rateElement.textContent = '$' + rate.toFixed(2);
+            
+            // Додаємо анімацію оновлення
+            rateElement.style.color = '#4caf50';
+            rateElement.style.textShadow = '0 0 10px #4caf50';
+            setTimeout(() => {
+                rateElement.style.color = '';
+                rateElement.style.textShadow = '';
+            }, 1000);
         }
         
         // Загальна кількість користувачів
@@ -86,13 +94,41 @@ async function loadStats() {
         if (totalTransactionsElement) {
             totalTransactionsElement.textContent = transactions.length;
         }
+        
+        // Перевірка підключення до API
+        await checkAPIStatus();
     } catch (error) {
         console.error('Помилка завантаження статистики:', error);
     }
 }
 
+// Перевірка статусу API
+async function checkAPIStatus() {
+    try {
+        const isConnected = await API.checkConnection();
+        const statusElement = document.getElementById('api-status');
+        
+        if (statusElement) {
+            if (isConnected) {
+                statusElement.textContent = '● API Connected';
+                statusElement.style.color = '#4caf50';
+            } else {
+                statusElement.textContent = '● API Disconnected';
+                statusElement.style.color = '#ff6b6b';
+            }
+        }
+    } catch (error) {
+        console.error('Помилка перевірки API:', error);
+        const statusElement = document.getElementById('api-status');
+        if (statusElement) {
+            statusElement.textContent = '● API Error';
+            statusElement.style.color = '#ff6b6b';
+        }
+    }
+}
+
 // Оновлення курсу валюти
-function updateRate() {
+async function updateRate() {
     const newRate = document.getElementById('new-rate').value;
     
     if (!newRate || parseFloat(newRate) <= 0) {
@@ -100,10 +136,31 @@ function updateRate() {
         return;
     }
     
-    if (setExchangeRate(newRate)) {
-        alert(`✅ Курс успішно оновлено на $${parseFloat(newRate).toFixed(2)}!`);
-        document.getElementById('new-rate').value = '';
-        loadStats();
+    try {
+        const result = await API.updateExchangeRate(parseFloat(newRate));
+        
+        if (result.success) {
+            alert(`✅ Курс успішно оновлено на $${parseFloat(newRate).toFixed(2)}!`);
+            document.getElementById('new-rate').value = '';
+            await loadStats();
+            
+            // Додаємо транзакцію про зміну курсу
+            await API.addTransaction({
+                type: 'rate_change',
+                fromUser: 'admin',
+                toUser: 'system',
+                coins: 0,
+                usd: 0,
+                fee: 0,
+                description: `Адмін змінив курс на $${parseFloat(newRate).toFixed(2)} за 1 OBUHOV`,
+                timestamp: new Date().toISOString()
+            });
+        } else {
+            alert('❌ Помилка оновлення курсу: ' + (result.error || 'Невідома помилка'));
+        }
+    } catch (error) {
+        console.error('Помилка оновлення курсу:', error);
+        alert('❌ Помилка оновлення курсу!');
     }
 }
 

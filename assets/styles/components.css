@@ -10,7 +10,7 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    animation: fadeOut 1s ease 4s forwards;
+    animation: fadeOut 1s ease 2s forwards;
 }
 
 .loading-container {
@@ -57,7 +57,7 @@
     width: 0%;
     height: 100%;
     background: linear-gradient(90deg, #45e24b, #097225);
-    animation: progress 3s ease-in-out forwards;
+    animation: progress 2s ease-in-out forwards;
     border-radius: 10px;
 }
 
@@ -1141,3 +1141,4 @@ a:has(.buy-now-btn) {
         text-align: center;
     }
 }
+

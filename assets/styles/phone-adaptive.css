@@ -301,8 +301,9 @@
 
 	/* Реклама */
 	.reclama-H2 {
-		font-size: 28px;
+		font-size: 28px;;
 	}
+
 
 	/* About */
 	.about-logo {
@@ -412,7 +413,8 @@
 	.reclama-H3 { 
 		font-size: 32px; 
 		left: 20px;
-		top: 10%;
+		top: 35px;
+		
 	}
 	
 	.discord-link-btn { 
@@ -441,7 +443,7 @@
 	.reclama-H3 { 
 		font-size: 22px; 
 		left: 16px;
-		top: 15%;
+		top: 35px;
 	}
 	
 	.discord-link-btn { 
@@ -547,6 +549,7 @@
 	.reclama-H3 {
 		font-size: 18px;
 		left: 12px;
+		top: 35px;
 	}
 
 	.discord-link-btn {
@@ -813,6 +816,7 @@
 	.reclama-H3 {
 		font-size: 16px;
 		left: 10px;
+		top: 35px;
 	}
 
 	.discord-link-btn {
@@ -965,5 +969,3 @@
 		overflow-x: hidden;
 	}
 }
-
-/* ========== КІНЕЦЬ АДАПТИВНИХ СТИЛІВ ========== */

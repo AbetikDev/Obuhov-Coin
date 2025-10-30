@@ -16,7 +16,9 @@
         <div class="admin-header">
             <div>
                 <h1>🛡️ Адмін-панель</h1>
-                <p class="admin-info">Ласкаво просимо, <span id="admin-name">Адміністратор</span> <span style="color: #4caf50; font-size: 0.85em;">● Live</span></p>
+                <p class="admin-info">Ласкаво просимо, <span id="admin-name">Адміністратор</span> 
+                    <span id="api-status" style="color: #4caf50; font-size: 0.85em;">● API Connected</span>
+                </p>
             </div>
             <div class="admin-actions">
                 <a href="index.html" class="admin-btn">← Головна</a>
@@ -28,7 +30,7 @@
         <div class="rate-section">
             <div class="rate-box">
                 <h3>💱 Курс валюти</h3>
-                <p class="current-rate">Поточний курс: <span id="admin-rate">$2.65</span> за 1 OBUHOV</p>
+                <p class="current-rate">Поточний курс: <span id="admin-rate" class="rate-value">$2.65</span> за 1 OBUHOV</p>
                 <div class="rate-form">
                     <input type="number" id="new-rate" placeholder="Новий курс" step="0.01" min="0.01">
                     <button class="rate-btn" onclick="updateRate()">Оновити курс</button>
