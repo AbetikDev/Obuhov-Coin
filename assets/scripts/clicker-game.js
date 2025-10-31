@@ -1,52 +1,34 @@
 // Клікер гра для Obuhov Coin
 let gameState = {
     coins: 0,
-    clickPower: 0.001, // Змінено на 0.001 OBUHOV за клік (1000 кліків = 1 монета)
-    progressToNextCoin: 0,
-    clicksNeeded: 1000, // 1000 кліків для 1 повної монети
+    clickPower: 0.001,
     totalClicks: 0,
+    clicksInSession: 0,
     multiplier: 1,
-    autoClickers: 0,
-    lastClickTime: 0, // Для затримки між кліками
-    clickCooldown: 250, // 250 мс затримка
-    autoClickerPrice: 100, // Ціна автоклікера
-    upgrades: {
-        clickPower: 1,
-        autoClicker: 0,
-        multiplier: 1
-    }
+    isTimedOut: false,
+    timeoutEndTime: 0
 };
 
 // Елементи DOM
 let coinsDisplay, balanceDisplay, progressBar, clickerButton, statusDesc, totalClicksDisplay, clickPowerDisplay;
-let userNameDisplay, userStatusDisplay, profileBalanceDisplay, profileUsdDisplay, cooldownBar, cooldownText, progressText;
+let userNameDisplay, userStatusDisplay, profileBalanceDisplay, profileUsdDisplay, progressText, currentRateDisplay;
 
 // Ініціалізація гри
 document.addEventListener('DOMContentLoaded', async () => {
-    // Перевірка авторизації
     const isAuthorized = await requireAuth();
     if (!isAuthorized) return;
 
-    // Ініціалізація елементів
     initializeElements();
-    
-    // Завантаження даних користувача
     await loadUserData();
-    
-    // Запуск гри
     startGame();
     
-    // Автозбереження кожні 5 секунд
     setInterval(saveGameProgress, 5000);
-    
-    // Авто-клікери кожну секунду
-    setInterval(autoClick, 5);
-    
-    // Оновлення курсу кожну хвилину
     setInterval(loadExchangeRate, 60000);
+    setInterval(checkTimeout, 1000);
+    
+    hideAutoClickerButton();
 });
 
-// Ініціалізація елементів DOM
 function initializeElements() {
     coinsDisplay = document.getElementById('user-coins');
     balanceDisplay = document.getElementById('balance');
@@ -55,29 +37,35 @@ function initializeElements() {
     statusDesc = document.getElementById('status-desc');
     totalClicksDisplay = document.getElementById('total-clicks');
     clickPowerDisplay = document.getElementById('click-power');
-    
-    // Нові елементи панелі користувача
     userNameDisplay = document.getElementById('user-name');
     userStatusDisplay = document.getElementById('user-status');
     profileBalanceDisplay = document.getElementById('profile-balance');
     profileUsdDisplay = document.getElementById('profile-usd');
     currentRateDisplay = document.getElementById('current-rate');
-    cooldownBar = document.getElementById('cooldown-bar');
-    cooldownText = document.querySelector('.cooldown-text');
     progressText = document.getElementById('progress-text');
     
-    // Додаємо обробник кліку
     if (clickerButton) {
         clickerButton.addEventListener('click', handleClick);
     }
     
-    // Додаємо обробник для статусу
     if (statusDesc) {
         statusDesc.addEventListener('click', updateBalanceFromProfile);
     }
 }
 
-// Завантаження даних користувача
+function hideAutoClickerButton() {
+    const autoClickerBtn = document.getElementById('auto-clicker-btn');
+    const autoClickerCount = document.getElementById('auto-clicker-count');
+    
+    if (autoClickerBtn) {
+        autoClickerBtn.style.display = 'none';
+    }
+    
+    if (autoClickerCount) {
+        autoClickerCount.style.display = 'none';
+    }
+}
+
 async function loadUserData() {
     try {
         const user = await getCurrentUser();
@@ -86,18 +74,12 @@ async function loadUserData() {
             return;
         }
         
-        // Оновлюємо основний баланс
         if (balanceDisplay) {
             balanceDisplay.textContent = (user.coins || 0).toFixed(2);
         }
         
-        // Оновлюємо панель користувача
         updateUserInfoPanel(user);
-        
-        // Завантажуємо курс валюти
         await loadExchangeRate();
-        
-        // Завантажуємо збережений прогрес гри
         loadGameProgress();
         
     } catch (error) {
@@ -105,7 +87,6 @@ async function loadUserData() {
     }
 }
 
-// Оновлення панелі інформації про користувача
 function updateUserInfoPanel(user) {
     if (userNameDisplay) {
         userNameDisplay.textContent = user.username;
@@ -130,7 +111,6 @@ function updateUserInfoPanel(user) {
     }
 }
 
-// Завантаження курсу валюти
 async function loadExchangeRate() {
     try {
         if (currentRateDisplay) {
@@ -145,316 +125,174 @@ async function loadExchangeRate() {
     }
 }
 
-// Запуск гри
 function startGame() {
     updateDisplay();
-    updateAutoClickerButton();
     
-    // Додаємо анімацію idle для кнопки
     if (clickerButton) {
         clickerButton.classList.add('clicker-idle');
     }
 }
 
-// Обробка кліку
 function handleClick(event) {
-    const currentTime = Date.now();
-    
-    // Перевіряємо затримку між кліками
-    if (currentTime - gameState.lastClickTime < gameState.clickCooldown) {
-        // Показуємо повідомлення про затримку
-        showCooldownMessage(event);
+    if (gameState.isTimedOut) {
+        showTimeoutMessage(event);
         return;
     }
     
-    // Оновлюємо час останнього кліку
-    gameState.lastClickTime = currentTime;
-    
-    // Запускаємо індикатор затримки та прозорість
-    startCooldownIndicator();
-    makeClickerTransparent();
-    
-    // Анімація кліку
     animateClick(event);
     
-    // Додаємо прогрес (0.1 OBUHOV за клік)
     const earnedAmount = gameState.clickPower * gameState.multiplier;
-    gameState.progressToNextCoin += earnedAmount;
+    gameState.coins += earnedAmount;
     gameState.totalClicks++;
+    gameState.clicksInSession++;
     
-    // Перевіряємо, чи зароблена повна монета
-    if (gameState.progressToNextCoin >= 1) {
-        const fullCoins = Math.floor(gameState.progressToNextCoin);
-        gameState.coins += fullCoins;
-        gameState.progressToNextCoin -= fullCoins;
-        
-        // Ефект заробітку повної монети
-        if (fullCoins > 0) {
-            showCoinEarnedEffect(fullCoins);
-        }
+    if (gameState.clicksInSession >= 200) {
+        startTimeout();
     }
     
-    // Оновлюємо відображення
     updateDisplay();
-    
-    // Ефекти кліку з місця кліку
     createClickEffect(event, earnedAmount);
-    
-    // Зберігаємо прогрес
     saveGameProgress();
 }
 
-// Заробляємо монету (оновлено для нової системи)
-function earnCoin() {
-    // Ця функція тепер використовується тільки для авто-кліків
-    gameState.progressToNextCoin += gameState.clickPower * gameState.multiplier * 0.5;
+function startTimeout() {
+    gameState.isTimedOut = true;
+    gameState.timeoutEndTime = Date.now() + (5 * 60 * 1000);
+    gameState.clicksInSession = 0;
     
-    if (gameState.progressToNextCoin >= 1) {
-        const fullCoins = Math.floor(gameState.progressToNextCoin);
-        gameState.coins += fullCoins;
-        gameState.progressToNextCoin -= fullCoins;
-        
-        if (fullCoins > 0) {
-            showCoinEarnedEffect(fullCoins);
-        }
-    }
+    notify.warning('⏰ Ви зробили 200 кліків! Таймаут на 5 хвилин активований.');
     
-    // Зберігаємо прогрес
     saveGameProgress();
 }
 
-// Авто-клік
-function autoClick() {
-    if (gameState.autoClickers > 0) {
-        const earnedAmount = gameState.autoClickers * gameState.multiplier * 0.05; // Менше ніж ручний клік
-        gameState.progressToNextCoin += earnedAmount;
+function checkTimeout() {
+    if (gameState.isTimedOut && Date.now() >= gameState.timeoutEndTime) {
+        gameState.isTimedOut = false;
+        gameState.timeoutEndTime = 0;
         
-        if (gameState.progressToNextCoin >= 1) {
-            const fullCoins = Math.floor(gameState.progressToNextCoin);
-            gameState.coins += fullCoins;
-            gameState.progressToNextCoin -= fullCoins;
-        }
+        notify.success('✅ Таймаут закінчився! Можете продовжувати кликати.');
         
-        updateDisplay();
+        saveGameProgress();
     }
+    
+    updateDisplay();
 }
 
-// Оновлення відображення
+function showTimeoutMessage(event) {
+    const timeLeft = Math.ceil((gameState.timeoutEndTime - Date.now()) / 1000);
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    
+    const message = document.createElement('div');
+    message.className = 'timeout-message';
+    message.textContent = '⏰ Таймаут: ' + minutes + ':' + seconds.toString().padStart(2, '0');
+    
+    message.style.position = 'fixed';
+    message.style.left = event.clientX + 'px';
+    message.style.top = event.clientY + 'px';
+    message.style.transform = 'translate(-50%, -50%)';
+    message.style.pointerEvents = 'none';
+    message.style.zIndex = '10001';
+    message.style.color = '#ff6b6b';
+    message.style.fontWeight = 'bold';
+    message.style.fontSize = '14px';
+    message.style.background = 'rgba(0,0,0,0.8)';
+    message.style.padding = '5px 10px';
+    message.style.borderRadius = '5px';
+    
+    document.body.appendChild(message);
+    
+    setTimeout(() => {
+        if (message.parentElement) {
+            message.parentElement.removeChild(message);
+        }
+    }, 2000);
+}
+
 function updateDisplay() {
     if (coinsDisplay) {
-        coinsDisplay.textContent = `${gameState.coins.toFixed(3)} OBUHOV`;
+        coinsDisplay.textContent = gameState.coins.toFixed(3) + ' OBUHOV';
     }
     
     if (progressBar) {
-        // Прогрес до наступної повної монети (від 0 до 1000 кліків)
-        const progressPercent = (gameState.progressToNextCoin * 1000) % 1000 / 10; // Перетворюємо в відсотки
+        const progressPercent = (gameState.clicksInSession / 200) * 100;
         progressBar.value = progressPercent;
         progressBar.max = 100;
     }
     
-    // Відображення прогресу в кліках та відсотках
     if (progressText) {
-        const clicksToNext = Math.ceil((1 - (gameState.progressToNextCoin % 1)) * 1000);
-        const progressPercent = ((gameState.progressToNextCoin % 1) * 100).toFixed(1);
-        progressText.textContent = `До наступної монети: ${clicksToNext} кліків (${progressPercent}%)`;
+        if (gameState.isTimedOut) {
+            const timeLeft = Math.ceil((gameState.timeoutEndTime - Date.now()) / 1000);
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            progressText.textContent = '⏰ Таймаут: ' + minutes + ':' + seconds.toString().padStart(2, '0');
+            progressText.style.color = '#ff6b6b';
+        } else {
+            const clicksLeft = 200 - gameState.clicksInSession;
+            progressText.textContent = 'До таймауту: ' + clicksLeft + ' кліків (' + gameState.clicksInSession + '/200)';
+            progressText.style.color = '';
+        }
     }
     
-    // Оновлюємо статистику
     if (totalClicksDisplay) {
         totalClicksDisplay.textContent = gameState.totalClicks;
     }
     
     if (clickPowerDisplay) {
-        clickPowerDisplay.textContent = (gameState.clickPower * gameState.multiplier * 1000).toFixed(1);
+        clickPowerDisplay.textContent = '1.0';
+    }
+    
+    if (clickerButton) {
+        if (gameState.isTimedOut) {
+            clickerButton.style.opacity = '0.5';
+            clickerButton.style.pointerEvents = 'none';
+        } else {
+            clickerButton.style.opacity = '1';
+            clickerButton.style.pointerEvents = 'auto';
+        }
     }
 }
 
-// Анімація кліку
 function animateClick(event) {
     if (!clickerButton) return;
     
-    // Анімація стиснення
     clickerButton.style.transform = 'scale(0.95)';
     
     setTimeout(() => {
         clickerButton.style.transform = 'scale(1)';
     }, 100);
     
-    // Анімація пульсації
     clickerButton.classList.add('clicker-pulse');
     setTimeout(() => {
         clickerButton.classList.remove('clicker-pulse');
     }, 300);
 }
 
-// Створення ефекту кліку
 function createClickEffect(event, earnedAmount) {
     const effect = document.createElement('div');
     effect.className = 'click-effect';
-    effect.textContent = `+${(earnedAmount * 1000).toFixed(1)}`; // Показуємо в тисячних
+    effect.textContent = '+' + earnedAmount.toFixed(3) + ' OBUHOV';
     
-    // Позиціонування відносно кліку на сторінці
     effect.style.position = 'fixed';
-    effect.style.left = `${event.clientX}px`;
-    effect.style.top = `${event.clientY}px`;
+    effect.style.left = event.clientX + 'px';
+    effect.style.top = event.clientY + 'px';
     effect.style.transform = 'translate(-50%, -50%)';
     effect.style.pointerEvents = 'none';
     effect.style.zIndex = '10000';
+    effect.style.color = '#14e21b';
+    effect.style.fontWeight = 'bold';
+    effect.style.fontSize = '16px';
+    effect.style.textShadow = '0 0 10px rgba(20, 226, 27, 0.8)';
     
     document.body.appendChild(effect);
     
-    // Видаляємо ефект через 1 секунду
     setTimeout(() => {
         if (effect.parentElement) {
             effect.parentElement.removeChild(effect);
         }
-    }, 250);
-}
-
-// Показати повідомлення про затримку
-function showCooldownMessage(event) {
-    const message = document.createElement('div');
-    message.className = 'cooldown-message';
-    message.textContent = 'Зачекайте...';
-    
-    // Позиціонування відносно кліку
-    message.style.position = 'fixed';
-    message.style.left = `${event.clientX}px`;
-    message.style.top = `${event.clientY}px`;
-    message.style.transform = 'translate(-50%, -50%)';
-    message.style.pointerEvents = 'none';
-    message.style.zIndex = '10001';
-    
-    document.body.appendChild(message);
-    
-    // Видаляємо повідомлення через 1 секунду
-    setTimeout(() => {
-        if (message.parentElement) {
-            message.parentElement.removeChild(message);
-        }
     }, 1000);
 }
 
-// Запуск індикатора затримки
-function startCooldownIndicator() {
-    if (cooldownBar && cooldownText) {
-        cooldownBar.classList.add('active');
-        cooldownText.textContent = 'Зачекайте...';
-        
-        setTimeout(() => {
-            cooldownBar.classList.remove('active');
-            cooldownText.textContent = 'Готово до кліку';
-        }, gameState.clickCooldown);
-    }
-}
-
-// Робить клікер прозорим під час кулдауну
-function makeClickerTransparent() {
-    if (clickerButton) {
-        clickerButton.classList.add('cooldown-transparent');
-        
-        setTimeout(() => {
-            clickerButton.classList.remove('cooldown-transparent');
-        }, gameState.clickCooldown);
-    }
-}
-
-// Покупка автоклікера
-async function buyAutoClicker() {
-    const user = await getCurrentUser();
-    if (!user) {
-        alert('❌ Користувач не знайдений!');
-        return;
-    }
-    
-    if (user.coins < gameState.autoClickerPrice) {
-        alert(`❌ Недостатньо коштів! Потрібно ${gameState.autoClickerPrice} OBUHOV`);
-        return;
-    }
-    
-    try {
-        // Оновлюємо баланс користувача
-        const updatedUserData = {
-            ...user,
-            coins: user.coins - gameState.autoClickerPrice
-        };
-        
-        const result = await API.updateUser(user.username, updatedUserData);
-        
-        if (result.success) {
-            // Додаємо автоклікер
-            gameState.autoClickers++;
-            gameState.autoClickerPrice = Math.floor(gameState.autoClickerPrice * 1.5); // Збільшуємо ціну
-            
-            // Додаємо транзакцію
-            await API.addTransaction({
-                type: 'clicker_purchase',
-                description: `Покупка автоклікера`,
-                fromUser: user.username,
-                toUser: 'clicker',
-                coins: gameState.autoClickerPrice / 1.5,
-                usd: 0,
-                fee: 0,
-                timestamp: new Date().toISOString()
-            });
-            
-            // Зберігаємо стан
-            saveGameProgress();
-            updateDisplay();
-            updateAutoClickerButton();
-            
-            // Оновлюємо баланс
-            await updateBalanceFromProfile();
-            
-            alert(`✅ Куплено автоклікер! Тепер у вас ${gameState.autoClickers} автоклікерів`);
-            
-        } else {
-            alert('❌ Помилка покупки: ' + (result.error || 'Невідома помилка'));
-        }
-        
-    } catch (error) {
-        console.error('Помилка покупки автоклікера:', error);
-        alert('❌ Помилка покупки автоклікера!');
-    }
-}
-
-// Оновлення кнопки автоклікера
-function updateAutoClickerButton() {
-    const autoClickerBtn = document.getElementById('auto-clicker-btn');
-    const autoClickerCount = document.getElementById('auto-clicker-count');
-    
-    if (autoClickerBtn) {
-        autoClickerBtn.textContent = `🤖 Купити автоклікер (${gameState.autoClickerPrice} OBUHOV)`;
-    }
-    
-    if (autoClickerCount) {
-        autoClickerCount.textContent = `Автоклікери: ${gameState.autoClickers}`;
-    }
-}
-
-// Показати ефект заробленої монети
-function showCoinEarnedEffect(coinsEarned = 1) {
-    const effect = document.createElement('div');
-    effect.className = 'coin-earned-effect';
-    effect.textContent = `+${coinsEarned} OBUHOV`;
-    
-    if (clickerButton && clickerButton.parentElement) {
-        effect.style.position = 'absolute';
-        effect.style.top = '-30px';
-        effect.style.left = '50%';
-        effect.style.transform = 'translateX(-50%)';
-        
-        clickerButton.parentElement.appendChild(effect);
-        
-        setTimeout(() => {
-            if (effect.parentElement) {
-                effect.parentElement.removeChild(effect);
-            }
-        }, 2000);
-    }
-}
-
-// Оновлення балансу з профілю
 async function updateBalanceFromProfile() {
     try {
         const user = await getCurrentUser();
@@ -463,11 +301,9 @@ async function updateBalanceFromProfile() {
                 balanceDisplay.textContent = (user.coins || 0).toFixed(2);
             }
             
-            // Оновлюємо панель користувача
             updateUserInfoPanel(user);
         }
         
-        // Показуємо повідомлення
         if (statusDesc) {
             const originalText = statusDesc.textContent;
             statusDesc.textContent = 'Оновлено!';
@@ -495,7 +331,6 @@ async function updateBalanceFromProfile() {
     }
 }
 
-// Збереження прогресу гри
 function saveGameProgress() {
     try {
         localStorage.setItem('obuhov-clicker-game', JSON.stringify(gameState));
@@ -504,42 +339,41 @@ function saveGameProgress() {
     }
 }
 
-// Завантаження прогресу гри
 function loadGameProgress() {
     try {
         const saved = localStorage.getItem('obuhov-clicker-game');
         if (saved) {
             const savedState = JSON.parse(saved);
-            gameState = { ...gameState, ...savedState };
+            // Зберігаємо тільки необхідні дані, але не clickPower та multiplier
+            gameState.coins = savedState.coins || 0;
+            gameState.totalClicks = savedState.totalClicks || 0;
+            gameState.clicksInSession = savedState.clicksInSession || 0;
+            gameState.isTimedOut = savedState.isTimedOut || false;
+            gameState.timeoutEndTime = savedState.timeoutEndTime || 0;
+            // clickPower завжди 0.001, multiplier завжди 1
+            gameState.clickPower = 0.001;
+            gameState.multiplier = 1;
         }
     } catch (error) {
         console.error('Помилка завантаження гри:', error);
     }
 }
 
-// Функції для апгрейдів (можна розширити в майбутньому)
-function buyUpgrade(type) {
-    // Тут буде логіка покупки апгрейдів
-    console.log(`Покупка апгрейду: ${type}`);
-}
-
-// Перенесення монет в основний баланс
 async function transferCoinsToAccount() {
     if (gameState.coins <= 0) {
-        alert('❌ Немає монет для переносу!');
+        notify.error('❌ Немає монет для переносу!');
         return;
     }
     
     try {
         const user = await getCurrentUser();
         if (!user) {
-            alert('❌ Користувач не знайдений!');
+            notify.error('❌ Користувач не знайдений!');
             return;
         }
         
         const coinsToTransfer = gameState.coins;
         
-        // Оновлюємо баланс користувача в API
         const updatedUserData = {
             ...user,
             coins: (user.coins || 0) + coinsToTransfer
@@ -548,10 +382,9 @@ async function transferCoinsToAccount() {
         const result = await API.updateUser(user.username, updatedUserData);
         
         if (result.success) {
-            // Додаємо транзакцію
             await API.addTransaction({
                 type: 'clicker_earning',
-                description: `Заробіток з клікера: ${coinsToTransfer.toFixed(2)} OBUHOV`,
+                description: 'Заробіток з клікера: ' + coinsToTransfer.toFixed(3) + ' OBUHOV',
                 fromUser: 'clicker',
                 toUser: user.username,
                 coins: coinsToTransfer,
@@ -560,29 +393,23 @@ async function transferCoinsToAccount() {
                 timestamp: new Date().toISOString()
             });
             
-            // Скидаємо монети в грі
             gameState.coins = 0;
             
-            // Зберігаємо стан
             saveGameProgress();
             updateDisplay();
             
-            // Оновлюємо баланс
             await updateBalanceFromProfile();
             
-            alert(`✅ Перенесено ${coinsToTransfer.toFixed(2)} OBUHOV на ваш рахунок!`);
+            notify.success('✅ Перенесено ' + coinsToTransfer.toFixed(3) + ' OBUHOV на ваш рахунок!');
             
         } else {
-            alert('❌ Помилка переносу монет: ' + (result.error || 'Невідома помилка'));
+            notify.error('❌ Помилка переносу монет: ' + (result.error || 'Невідома помилка'));
         }
         
     } catch (error) {
         console.error('Помилка переносу монет:', error);
-        alert('❌ Помилка переносу монет!');
+        notify.error('❌ Помилка переносу монет!');
     }
 }
 
-// Експорт функцій для використання в HTML
 window.transferCoinsToAccount = transferCoinsToAccount;
-window.buyUpgrade = buyUpgrade;
-window.buyAutoClicker = buyAutoClicker;

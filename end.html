@@ -244,8 +244,10 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="assets/styles/notifications.css">
 </head>
 <body>
+    <script src="assets/scripts/frontend/notifications.js"></script>
     <div class="container">
         <!-- Анімована монетка -->
         <div class="coin-wrapper">
@@ -372,7 +374,7 @@
             konamiCode = konamiCode.slice(-10);
             
             if (JSON.stringify(konamiCode) === JSON.stringify(konamiTarget)) {
-                alert('🎮 Konami Code активовано! Але це все одно нічого не змінює 😂');
+                notify.success('🎮 Konami Code активовано! Але це все одно нічого не змінює 😂');
                 // Супер-швидке обертання монетки
                 document.querySelector('.coin-icon').style.animation = 'spin3d 0.5s linear infinite, float 3s ease-in-out infinite';
             }

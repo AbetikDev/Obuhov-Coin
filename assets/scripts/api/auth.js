@@ -547,7 +547,7 @@ async function requireAdmin() {
     
     const admin = await isAdmin();
     if (!admin) {
-        alert('❌ Доступ заборонено! Ви не адміністратор.');
+        notify.error('❌ Доступ заборонено! Ви не адміністратор.');
         window.location.href = 'profile.html';
         return false;
     }

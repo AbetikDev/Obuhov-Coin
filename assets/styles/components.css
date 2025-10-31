@@ -1001,30 +1001,55 @@ a:has(.buy-now-btn) {
 }
 
 /* Кнопка переносу монет */
+.transfer-btn,
 .clicker-transfer-btn {
     display: inline-block;
-    padding: 12px 24px;
-    font-size: 16px;
+    padding: 15px 30px;
+    font-size: 18px;
     font-weight: bold;
-    color: black;
-    background: greenyellow;
-    border: none;
-    border-radius: 8px;
+    color: #000;
+    background: linear-gradient(135deg, #adff2f 0%, #7fff00 100%);
+    border: 2px solid #7fff00;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 10px rgba(173, 255, 47, 0.3);
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(173, 255, 47, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
 }
 
+.transfer-btn::before,
+.clicker-transfer-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.transfer-btn:hover::before,
+.clicker-transfer-btn:hover::before {
+    left: 100%;
+}
+
+.transfer-btn:hover,
 .clicker-transfer-btn:hover {
-    background: rgb(149, 242, 10);
-    box-shadow: 0 4px 15px rgba(173, 255, 47, 0.5);
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #7fff00 0%, #adff2f 100%);
+    box-shadow: 0 6px 20px rgba(173, 255, 47, 0.6);
+    transform: translateY(-3px);
+    border-color: #adff2f;
 }
 
+.transfer-btn:active,
 .clicker-transfer-btn:active {
-    transform: translateY(0px);
-    box-shadow: 0 2px 10px rgba(173, 255, 47, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(173, 255, 47, 0.4);
 }
 
 /* Статистика клікера */
@@ -1106,10 +1131,11 @@ a:has(.buy-now-btn) {
         min-width: 120px;
     }
     
+    .transfer-btn,
     .clicker-transfer-btn {
         width: 100%;
-        font-size: 14px;
-        padding: 10px 20px;
+        font-size: 16px;
+        padding: 12px 20px;
     }
 }
 

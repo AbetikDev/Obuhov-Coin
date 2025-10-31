@@ -15,13 +15,13 @@ async function getExchangeRate() {
 async function setExchangeRate(newRate) {
     const admin = await isAdmin();
     if (!admin) {
-        alert('❌ Тільки адміністратор може змінювати курс!');
+        notify.error('❌ Тільки адміністратор може змінювати курс!');
         return false;
     }
     
     const rate = parseFloat(newRate);
     if (isNaN(rate) || rate <= 0) {
-        alert('❌ Невірний курс валюти!');
+        notify.error('❌ Невірний курс валюти!');
         return false;
     }
     
@@ -29,7 +29,7 @@ async function setExchangeRate(newRate) {
     const result = await API.updateExchangeRate(rate);
     
     if (!result.success) {
-        alert('❌ Помилка оновлення курсу: ' + result.error);
+        notify.error('❌ Помилка оновлення курсу: ' + result.error);
         return false;
     }
     

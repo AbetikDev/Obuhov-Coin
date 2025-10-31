@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест UI Сповіщень - Obuhov Coin</title>
+    <link rel="stylesheet" href="assets/styles/notifications.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 50px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #adff2f;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .test-section h2 {
+            color: #adff2f;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+        .btn-error {
+            background: #f44336;
+            color: white;
+        }
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+        }
+        .btn-info {
+            background: #2196f3;
+            color: white;
+        }
+        .btn-confirm {
+            background: #9c27b0;
+            color: white;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #adff2f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔔 Тестування UI Сповіщень</h1>
+        
+        <div class="test-section">
+            <h2>Базові типи сповіщень:</h2>
+            <button class="btn-success" onclick="notify.success('✅ Операція успішно виконана!')">
+                Success
+            </button>
+            <button class="btn-error" onclick="notify.error('❌ Виникла помилка при виконанні!')">
+                Error
+            </button>
+            <button class="btn-warning" onclick="notify.warning('⚠️ Будьте обережні з цією дією!')">
+                Warning
+            </button>
+            <button class="btn-info" onclick="notify.info('ℹ️ Корисна інформація для вас')">
+                Info
+            </button>
+        </div>
+
+        <div class="test-section">
+            <h2>Підтвердження дій:</h2>
+            <button class="btn-confirm" onclick="testConfirm()">
+                Confirm Dialog
+            </button>
+            <button class="btn-error" onclick="testDeleteConfirm()">
+                Delete Confirm
+            </button>
+        </div>
+
+        <div class="test-section">
+            <h2>Різна тривалість:</h2>
+            <button class="btn-info" onclick="notify.info('⚡ Швидке повідомлення', 1000)">
+                1 секунда
+            </button>
+            <button class="btn-success" onclick="notify.success('✅ Стандартне повідомлення', 4000)">
+                4 секунди (default)
+            </button>
+            <button class="btn-warning" onclick="notify.warning('⚠️ Довге повідомлення', 8000)">
+                8 секунд
+            </button>
+            <button class="btn-error" onclick="notify.error('❌ Постійне повідомлення (закрийте вручну)', 0)">
+                Постійне
+            </button>
+        </div>
+
+        <div class="test-section">
+            <h2>Множинні сповіщення:</h2>
+            <button class="btn-info" onclick="showMultiple()">
+                Показати 5 сповіщень
+            </button>
+            <button class="btn-warning" onclick="notify.clear()">
+                Очистити всі
+            </button>
+        </div>
+
+        <div class="test-section">
+            <h2>Приклади з проекту:</h2>
+            <button class="btn-success" onclick="notify.success('✅ Перенесено 5.420 OBUHOV на ваш рахунок!')">
+                Клікер - Переніс монет
+            </button>
+            <button class="btn-warning" onclick="notify.warning('⏰ Ви зробили 200 кліків! Таймаут на 5 хвилин активований.')">
+                Клікер - Таймаут
+            </button>
+            <button class="btn-success" onclick="notify.success('✅ Курс успішно оновлено на $2.65!')">
+                Адмін - Оновлення курсу
+            </button>
+            <button class="btn-error" onclick="notify.error('❌ Недостатньо коштів на балансі!')">
+                Профіль - Помилка переказу
+            </button>
+        </div>
+
+        <a href="index.html" class="back-link">← Повернутися на головну</a>
+    </div>
+
+    <script src="assets/scripts/frontend/notifications.js"></script>
+    <script>
+        function testConfirm() {
+            notify.confirm('Ви впевнені, що хочете продовжити?', 
+                () => {
+                    notify.success('✅ Ви підтвердили дію!');
+                },
+                () => {
+                    notify.info('ℹ️ Ви скасували дію');
+                }
+            );
+        }
+
+        function testDeleteConfirm() {
+            notify.confirm('Видалити користувача "TestUser"? Це не можна відмінити!', 
+                () => {
+                    // Симуляція асинхронної операції
+                    setTimeout(() => {
+                        notify.success('✅ Користувача "TestUser" успішно видалено!');
+                    }, 500);
+                }
+            );
+        }
+
+        function showMultiple() {
+            notify.success('✅ Перше повідомлення');
+            setTimeout(() => notify.info('ℹ️ Друге повідомлення'), 200);
+            setTimeout(() => notify.warning('⚠️ Третє повідомлення'), 400);
+            setTimeout(() => notify.error('❌ Четверте повідомлення'), 600);
+            setTimeout(() => notify.success('✅ П\'яте повідомлення'), 800);
+        }
+
+        // Вітальне повідомлення
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                notify.success('👋 Ласкаво просимо до тестової сторінки сповіщень!', 5000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>

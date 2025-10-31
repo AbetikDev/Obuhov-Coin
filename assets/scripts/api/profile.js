@@ -150,19 +150,19 @@ async function executeBuy() {
     const usdAmount = parseFloat(document.getElementById('buy-usd').value);
     
     if (!usdAmount || usdAmount <= 0) {
-        alert('❌ Введіть коректну суму!');
+        notify.error('❌ Введіть коректну суму!');
         return;
     }
     
     const result = await buyCoins(user.username, usdAmount);
     
     if (result.success) {
-        alert(result.message);
+        notify.success(result.message);
         document.getElementById('buy-usd').value = '';
         document.getElementById('buy-coins-result').value = '';
         await loadProfileData();
     } else {
-        alert('❌ ' + result.message);
+        notify.error('❌ ' + result.message);
     }
 }
 
@@ -174,19 +174,19 @@ async function executeSell() {
     const coinsAmount = parseFloat(document.getElementById('sell-coins').value);
     
     if (!coinsAmount || coinsAmount <= 0) {
-        alert('❌ Введіть коректну кількість!');
+        notify.error('❌ Введіть коректну кількість!');
         return;
     }
     
     const result = await sellCoins(user.username, coinsAmount);
     
     if (result.success) {
-        alert(result.message);
+        notify.success(result.message);
         document.getElementById('sell-coins').value = '';
         document.getElementById('sell-usd-result').value = '';
         await loadProfileData();
     } else {
-        alert('❌ ' + result.message);
+        notify.error('❌ ' + result.message);
     }
 }
 
@@ -238,14 +238,14 @@ async function createBuyOrderUI() {
     const price = parseFloat(document.getElementById('order-buy-price').value);
     
     if (!coins || coins <= 0 || !price || price <= 0) {
-        alert('❌ Заповніть всі поля коректно!');
+        notify.error('❌ Заповніть всі поля коректно!');
         return;
     }
     
     const result = await createBuyOrder(user.username, coins, price);
     
     if (result.success) {
-        alert(result.message);
+        notify.success(result.message);
         document.getElementById('order-buy-coins').value = '';
         document.getElementById('order-buy-price').value = '';
         document.getElementById('buy-total').textContent = '0.00';
@@ -253,7 +253,7 @@ async function createBuyOrderUI() {
         await loadMyOrders();
         await loadMarketOrders();
     } else {
-        alert('❌ ' + result.message);
+        notify.error('❌ ' + result.message);
     }
 }
 
@@ -266,14 +266,14 @@ async function createSellOrderUI() {
     const price = parseFloat(document.getElementById('order-sell-price').value);
     
     if (!coins || coins <= 0 || !price || price <= 0) {
-        alert('❌ Заповніть всі поля коректно!');
+        notify.error('❌ Заповніть всі поля коректно!');
         return;
     }
     
     const result = await createSellOrder(user.username, coins, price);
     
     if (result.success) {
-        alert(result.message);
+        notify.success(result.message);
         document.getElementById('order-sell-coins').value = '';
         document.getElementById('order-sell-price').value = '';
         document.getElementById('sell-total').textContent = '0.00';
@@ -281,7 +281,7 @@ async function createSellOrderUI() {
         await loadMyOrders();
         await loadMarketOrders();
     } else {
-        alert('❌ ' + result.message);
+        notify.error('❌ ' + result.message);
     }
 }
 
@@ -295,14 +295,14 @@ async function executeTransfer() {
     const note = document.getElementById('transfer-note').value.trim();
     
     if (!to || !amount || amount <= 0) {
-        alert('❌ Заповніть всі обов\'язкові поля!');
+        notify.error('❌ Заповніть всі обов\'язкові поля!');
         return;
     }
     
     const result = await transferCoins(user.username, to, amount, note);
     
     if (result.success) {
-        alert(result.message);
+        notify.success(result.message);
         document.getElementById('transfer-to').value = '';
         document.getElementById('transfer-amount').value = '';
         document.getElementById('transfer-note').value = '';
@@ -310,7 +310,7 @@ async function executeTransfer() {
         await loadProfileData();
         await loadTransactions();
     } else {
-        alert('❌ ' + result.message);
+        notify.error('❌ ' + result.message);
     }
 }
 
@@ -371,18 +371,18 @@ async function cancelOrderUI(orderId, type) {
     const user = await getCurrentUser();
     if (!user) return;
     
-    if (!confirm('Скасувати цей ордер?')) return;
-    
-    const result = await cancelOrder(user.username, orderId, type);
-    
-    if (result.success) {
-        alert(result.message);
-        await loadProfileData();
-        await loadMyOrders();
-        await loadMarketOrders();
-    } else {
-        alert('❌ ' + result.message);
-    }
+    notify.confirm('Скасувати цей ордер?', async () => {
+        const result = await cancelOrder(user.username, orderId, type);
+        
+        if (result.success) {
+            notify.success(result.message);
+            await loadProfileData();
+            await loadMyOrders();
+            await loadMarketOrders();
+        } else {
+            notify.error('❌ ' + result.message);
+        }
+    });
 }
 
 // Завантаження ринкових ордерів

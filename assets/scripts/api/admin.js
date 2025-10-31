@@ -132,7 +132,7 @@ async function updateRate() {
     const newRate = document.getElementById('new-rate').value;
     
     if (!newRate || parseFloat(newRate) <= 0) {
-        alert('❌ Введіть коректний курс!');
+        notify.error('❌ Введіть коректний курс!');
         return;
     }
     
@@ -140,7 +140,7 @@ async function updateRate() {
         const result = await API.updateExchangeRate(parseFloat(newRate));
         
         if (result.success) {
-            alert(`✅ Курс успішно оновлено на $${parseFloat(newRate).toFixed(2)}!`);
+            notify.success(`✅ Курс успішно оновлено на $${parseFloat(newRate).toFixed(2)}!`);
             document.getElementById('new-rate').value = '';
             await loadStats();
             
@@ -156,11 +156,11 @@ async function updateRate() {
                 timestamp: new Date().toISOString()
             });
         } else {
-            alert('❌ Помилка оновлення курсу: ' + (result.error || 'Невідома помилка'));
+            notify.error('❌ Помилка оновлення курсу: ' + (result.error || 'Невідома помилка'));
         }
     } catch (error) {
         console.error('Помилка оновлення курсу:', error);
-        alert('❌ Помилка оновлення курсу!');
+        notify.error('❌ Помилка оновлення курсу!');
     }
 }
 
@@ -266,7 +266,7 @@ async function editUser(username) {
         const user = await API.getUser(username);
         
         if (!user) {
-            alert('Користувача не знайдено!');
+            notify.error('Користувача не знайдено!');
             return;
         }
 
@@ -283,7 +283,7 @@ async function editUser(username) {
         }
     } catch (error) {
         console.error('Помилка завантаження користувача:', error);
-        alert('❌ Помилка завантаження даних користувача');
+        notify.error('❌ Помилка завантаження даних користувача');
     }
 }
 
@@ -313,7 +313,7 @@ async function saveUserChanges(event) {
         });
         
         if (!result.success) {
-            alert('❌ Помилка оновлення користувача: ' + (result.error || 'Невідома помилка'));
+            notify.error('❌ Помилка оновлення користувача: ' + (result.error || 'Невідома помилка'));
             return;
         }
         
@@ -334,10 +334,10 @@ async function saveUserChanges(event) {
         closeEditModal();
         
         // Повідомлення
-        alert(`✅ Дані користувача "${username}" успішно оновлено!`);
+        notify.success(`✅ Дані користувача "${username}" успішно оновлено!`);
     } catch (error) {
         console.error('Помилка збереження змін:', error);
-        alert('❌ Помилка збереження змін');
+        notify.error('❌ Помилка збереження змін');
     }
 }
 
@@ -348,44 +348,47 @@ async function deleteUser(username) {
         const user = await API.getUser(username);
         
         if (!user) {
-            alert('Користувача не знайдено!');
+            notify.error('Користувача не знайдено!');
             return;
         }
 
         if (user.isAdmin) {
-            alert('❌ Неможливо видалити адміністратора!');
+            notify.error('❌ Неможливо видалити адміністратора!');
             return;
         }
 
         // Підтвердження видалення
-        if (!confirm(`Ви впевнені, що хочете видалити користувача "${username}"?`)) {
-            return;
-        }
+        notify.confirm(`Ви впевнені, що хочете видалити користувача "${username}"?`, async () => {
+            try {
+                // Видалення через API
+                const result = await API.deleteUser(username);
+                
+                if (!result.success) {
+                    notify.error('❌ Помилка видалення користувача: ' + (result.error || 'Невідома помилка'));
+                    return;
+                }
+                
+                // Якщо це поточний користувач - вийти
+                const currentUsername = localStorage.getItem('currentUser');
+                if (currentUsername === username) {
+                    localStorage.removeItem('currentUser');
+                    window.location.href = 'index.html';
+                    return;
+                }
 
-        // Видалення через API
-        const result = await API.deleteUser(username);
-        
-        if (!result.success) {
-            alert('❌ Помилка видалення користувача: ' + (result.error || 'Невідома помилка'));
-            return;
-        }
-        
-        // Якщо це поточний користувач - вийти
-        const currentUsername = localStorage.getItem('currentUser');
-        if (currentUsername === username) {
-            localStorage.removeItem('currentUser');
-            window.location.href = 'index.html';
-            return;
-        }
-
-        // Оновлення UI
-        await loadStats();
-        await loadUsersTable();
-        
-        alert(`✅ Користувача "${username}" успішно видалено!`);
+                // Оновлення UI
+                await loadStats();
+                await loadUsersTable();
+                
+                notify.success(`✅ Користувача "${username}" успішно видалено!`);
+            } catch (error) {
+                console.error('Помилка видалення користувача:', error);
+                notify.error('❌ Помилка видалення користувача');
+            }
+        });
     } catch (error) {
         console.error('Помилка видалення користувача:', error);
-        alert('❌ Помилка видалення користувача');
+        notify.error('❌ Помилка видалення користувача');
     }
 }
 
