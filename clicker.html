@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Obuhov Coin Clicker - Заробляй коіни кліками!">
+    <meta name="keywords" content="Obuhov Coin, Clicker, Game, Crypto">
+    <meta name="author" content="Obuhov-Coin Team">
+
+    <!-- Web info -->
+    <title>Obuhov Coin | Clicker</title>
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/styles/main-design.css">
+    <link rel="stylesheet" href="assets/styles/components.css">
+    <link rel="stylesheet" href="assets/styles/helper.css">
+    <link rel="stylesheet" href="assets/styles/phone-adaptive.css">
+    <link rel="stylesheet" href="assets/styles/animations.css">
+    <link rel="stylesheet" href="assets/styles/notifications.css">
+</head>
+<body>
+    <!-- Header and nav links-->
+    <header>
+        <a href="index.html"><img class="small-logo" src="assets/images/icons/logo.png" alt="small logo"></a>
+        <h2 class="header-title">Obuhov Coin</h2>
+        <div class="menu-toggle" id="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav class="nav-links" id="nav-links">
+            <a href="profile.html">PROFILE</a>
+            <a href="birja.html">BIRGE</a>
+        </nav>
+    </header>
+    <!-- Clicker content-->
+    <div class="otstup-200px"></div>
+    <h1 class="welcome-text">Clicker <span class="obuh-color">Obuhov Coin</span></h1>
+    <p class="intro-text"><snap class="obuh-color">Obuhov Clicker</snap> - Кожен клік дає +0.001 OBUHOV. <span class="obuh-color">1000 кліків = 1 повна монета!</span></p>
+
+    <div class="clicker-frame">
+        <h1 class="user-coins" id="user-coins">0.00 OBUHOV</h1>
+        <progress class="clicker-progress" id="clicker-progress" value="0" max="100"></progress>
+        <div class="progress-info">
+            <span class="progress-text" id="progress-text">Прогрес до наступної монети: 0%</span>
+        </div>
+        <div class="cooldown-indicator" id="cooldown-indicator">
+            <div class="cooldown-bar" id="cooldown-bar"></div>
+            <span class="cooldown-text">Готово до кліку</span>
+        </div>
+        <img src="assets/images/icons/logo-maga.png" alt="Clicker component" class="clicker-component" id="clicker-component">
+    </div>
+
+    <div class="obuhov-status">
+        <h2 class="status-text">Ваш Баланс: <span class="obuh-color" id="balance">0.00</span></h2>
+        <a class="status-desc" id="status-desc">Перевірити статус</a>
+        
+        <!-- Панель управління клікером -->
+        <div class="clicker-controls">
+            <div class="user-info-panel">
+                <div class="user-avatar-section">
+                    <img src="assets/images/icons/logo.png" alt="Avatar" class="user-avatar" id="user-avatar">
+                    <div class="user-details">
+                        <h3 class="user-name" id="user-name">Завантаження...</h3>
+                        <p class="user-status" id="user-status">Користувач</p>
+                    </div>
+                </div>
+                <div class="balance-quick-view">
+                    <div class="balance-item">
+                        <span class="balance-icon">🪙</span>
+                        <span class="balance-label">Профіль:</span>
+                        <span class="balance-amount" id="profile-balance">0.00</span>
+                    </div>
+                    <div class="balance-item">
+                        <span class="balance-icon">💵</span>
+                        <span class="balance-label">USD:</span>
+                        <span class="balance-amount" id="profile-usd">$0.00</span>
+                    </div>
+                    <div class="balance-item rate-item">
+                        <span class="balance-icon">📈</span>
+                        <span class="balance-label">Курс:</span>
+                        <span class="balance-amount" id="current-rate">$0.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="transfer-btn" onclick="transferCoinsToAccount()">
+                💰 Перенести монети на рахунок
+            </button>
+            
+            <div class="clicker-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Всього кліків:</span>
+                    <span class="stat-value" id="total-clicks">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Сила кліку:</span>
+                    <span class="stat-value" id="click-power">1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <a href="assets/scripts/naidi.html"><img class="logo-footer" src="assets/images/icons/logo.png" alt="logo"></a>
+            <p>&copy; 2025 Obuhov Coin Team. Ваші дані захищені <span class="vrode">(Вроді).</span></p>
+            <a class="go-top" href="#hero">↑</a>
+        <div class="secret-tool">   </div>
+    </footer>
+    <!-- Scripts -->
+    <script src="assets/scripts/frontend/notifications.js"></script>
+    <script src="assets/scripts/api/api.js"></script>
+    <script src="assets/scripts/api/auth.js"></script>
+    <script src="assets/scripts/api/currency.js"></script>
+    <script src="assets/scripts/api/profile.js"></script>
+    <script src="assets/scripts/clicker-game.js"></script>
+    <script src="assets/scripts/frontend/load-anim.js"></script>
+    <script src="assets/scripts/frontend/effect-anim.js"></script>
+    <script src="assets/scripts/frontend/helper.js"></script>
+    <script src="assets/scripts/frontend/main.js"></script>
+    <script src="assets/scripts/frontend/scroll-anim.js"></script>
+    <script src="assets/scripts/frontend/page-anim.js"></script>
+</body>
+</html>

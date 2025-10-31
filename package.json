@@ -27,5 +27,12 @@
     "eslint-plugin-prettier": "^5.5.4",
     "prettier": "^3.6.2",
     "vite": "^7.1.11"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "experss": "^0.0.1-security",
+    "express": "^5.1.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
   }
 }

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Біржа - Obuhov Coin</title>
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/styles/birje_design.css">
+    <link rel="stylesheet" href="assets/styles/main-design.css">
+    <link rel="stylesheet" href="assets/styles/components.css">
+    <link rel="stylesheet" href="assets/styles/helper.css">
+    <link rel="stylesheet" href="assets/styles/animations.css">
+    <link rel="stylesheet" href="assets/styles/auth.css">
+    <link rel="stylesheet" href="assets/styles/notifications.css">
+</head>
+<body>
+    <!-- Модальне вікно авторизації -->
+    <div id="login-modal" class="login-modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <!-- Форма логіну -->
+            <div id="login-form-container">
+                <div class="modal-header">
+                    <h2>Вхід</h2>
+                    <p>Увійдіть до свого акаунту Obuhov Coin</p>
+                </div>
+                
+                <div id="login-error" class="error-message"></div>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">Ім'я користувача</label>
+                        <input type="text" id="login-username" placeholder="Введіть ім'я" maxlength="8" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Пароль</label>
+                        <input type="password" id="login-password" placeholder="Введіть пароль" minlength="4" maxlength="16" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Увійти</button>
+                </form>
+                
+                <div class="form-footer">
+                    <p>Немає акаунту? <a href="#" id="show-register">Зареєструватися</a></p>
+                </div>
+            </div>
+            
+            <!-- Форма реєстрації -->
+            <div id="register-form-container">
+                <div class="modal-header">
+                    <h2>Реєстрація</h2>
+                    <p>Створіть свій акаунт Obuhov Coin</p>
+                </div>
+                
+                <div id="register-error" class="error-message"></div>
+                
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">Ім'я користувача</label>
+                        <input type="text" id="register-username" placeholder="Від 3 до 8 символів" minlength="3" maxlength="8" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-password">Пароль</label>
+                        <input type="password" id="register-password" placeholder="Від 4 до 16 символів" minlength="4" maxlength="16" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-confirm-password">Підтвердіть пароль</label>
+                        <input type="password" id="register-confirm-password" placeholder="Повторіть пароль" minlength="4" maxlength="16" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Зареєструватися</button>
+                </form>
+                
+                <div class="form-footer">
+                    <p>Вже є акаунт? <a href="#" id="show-login">Увійти</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопка назад -->
+    <a href="index.html" class="back-btn">← Головна</a>
+
+    <!-- Header -->
+    <header>
+        <a href="index.html"><img class="small-logo" src="assets/images/icons/logo.png" alt="small logo"></a>
+        <h2 class="header-title">Obuhov Exchange</h2>
+        <button class="h-login-btn">LOGIN</button>
+    </header>
+
+    <!-- Основний контент -->
+    <div class="birja-container">
+        <!-- Заголовок -->
+        <div class="birja-header">
+            <h1 class="birja-title">🏦 Біржа Obuhov Coin</h1>
+            <p class="birja-subtitle">Торгуйте в режимі реального часу</p>
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                <span id="connection-status">Live Updates</span>
+            </div>
+        </div>
+
+        <!-- Курс валюти -->
+        <div class="exchange-rate-box">
+            <img src="assets/images/icons/logo-2d.png" alt="Obuhov Coin" class="rate-icon">
+            <div class="rate-label">Поточний курс OBUHOV</div>
+            <div class="rate-value">
+                <span class="price-value" id="exchange-rate">$2.65</span>
+                <span style="font-size: 1.5rem; color: #8892b0;">за 1 OBUHOV</span>
+            </div>
+            <div class="rate-change">📈 +5.2% за 24 години</div>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-label">Ринкова капіталізація</div>
+                <div class="stat-value">$1.2M</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-label">Об'єм торгів 24г</div>
+                <div class="stat-value">$250K</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🔄</div>
+                <div class="stat-label">В обігу</div>
+                <div class="stat-value">450K</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-label">Активні трейдери</div>
+                <div class="stat-value" id="active-traders">0</div>
+            </div>
+        </div>
+
+        <!-- График -->
+        <div class="chart-section">
+            <h3 class="chart-title">📈 Графік ціни OBUHOV</h3>
+            <div class="chart-placeholder">
+                <img src="assets/images/helper/graphic-text.png" alt="Price Chart">
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/scripts/frontend/notifications.js"></script>
+    <script src="assets/scripts/api/api.js"></script>
+    <script src="assets/scripts/api/auth.js"></script>
+    <script src="assets/scripts/api/currency.js"></script>
+    <script src="assets/scripts/frontend/helper.js"></script>
+    <script src="assets/scripts/api/birje.js"></script>
+</body>
+</html>

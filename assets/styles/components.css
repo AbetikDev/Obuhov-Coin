@@ -10,7 +10,7 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    animation: fadeOut 1s ease 4s forwards;
+    animation: fadeOut 1s ease 2s forwards;
 }
 
 .loading-container {
@@ -57,7 +57,7 @@
     width: 0%;
     height: 100%;
     background: linear-gradient(90deg, #45e24b, #097225);
-    animation: progress 3s ease-in-out forwards;
+    animation: progress 2s ease-in-out forwards;
     border-radius: 10px;
 }
 
@@ -560,6 +560,24 @@ a:has(.buy-now-btn) {
     color: greenyellow;
     font-weight: bold;
     text-shadow: 0 0 5px #14e21b;
+    transition: all 0.3s ease;
+}
+
+/* Анімація оновлення курсу */
+.price-value.updating {
+    color: #ffd700;
+    text-shadow: 0 0 10px #ffd700;
+    transform: scale(1.05);
+    animation: price-pulse 1s ease-in-out infinite;
+}
+
+@keyframes price-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
 }
 /* Анімація обертання КОІНА */
 .price-logo-2d {
@@ -589,3 +607,564 @@ a:has(.buy-now-btn) {
     transition: background 0.3s, box-shadow 0.3s;
     z-index: 1000;
 }
+
+/* ----------- Clicker Styles ------------ */
+
+/* Клікер фрейм */
+.clicker-frame {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(173, 255, 47, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(173, 255, 47, 0.2);
+}
+
+/* Відображення монет користувача */
+.user-coins {
+    font-size: 36px;
+    color: greenyellow;
+    text-shadow: 0 0 10px #14e21b;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Прогрес бар */
+.clicker-progress {
+    width: 100%;
+    height: 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(173, 255, 47, 0.3);
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.clicker-progress::-webkit-progress-bar {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.clicker-progress::-webkit-progress-value {
+    background: linear-gradient(90deg, #45e24b, #14e21b);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(20, 226, 27, 0.5);
+}
+
+.clicker-progress::-moz-progress-bar {
+    background: linear-gradient(90deg, #45e24b, #14e21b);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(20, 226, 27, 0.5);
+}
+
+/* Інформація про прогрес */
+.progress-info {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.progress-text {
+    font-size: 14px;
+    color: #ccc;
+}
+
+/* Індикатор затримки */
+.cooldown-indicator {
+    width: 100%;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.cooldown-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.cooldown-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #ff4757, #ff3838);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.1s ease;
+    box-shadow: 0 0 8px rgba(255, 71, 87, 0.6);
+}
+
+.cooldown-bar.active::after {
+    animation: cooldown-progress 1s linear;
+}
+
+.cooldown-text {
+    font-size: 12px;
+    color: #ccc;
+}
+
+@keyframes cooldown-progress {
+    0% { width: 100%; }
+    100% { width: 0%; }
+}
+
+/* Секція автоклікера */
+.auto-clicker-section {
+    margin: 15px 0;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.auto-clicker-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+    width: 100%;
+}
+
+.auto-clicker-btn:hover {
+    background: linear-gradient(135deg, #ffed4e, #fff700);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.auto-clicker-btn:active {
+    transform: translateY(0px);
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+.auto-clicker-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+
+.auto-clicker-count {
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 0 0 3px #ffd700;
+}
+
+.auto-clicker-desc {
+    color: #ccc;
+}
+
+/* Клікер компонент */
+.clicker-component {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 15px rgba(173, 255, 47, 0.6));
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    position: relative;
+    
+    /* Заборона виділення */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+    /* Заборона перетягування */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+}
+
+.clicker-component:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(173, 255, 47, 0.8));
+}
+
+.clicker-component:active {
+    transform: scale(0.95);
+}
+
+/* Прозорість під час кулдауну */
+.clicker-component.cooldown-transparent {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: drop-shadow(0 0 15px rgba(173, 255, 47, 0.3)) grayscale(50%);
+}
+
+/* Анімації для клікера */
+.clicker-idle {
+    animation: idle-float 3s ease-in-out infinite;
+}
+
+.clicker-pulse {
+    animation: pulse-click 0.3s ease-out;
+}
+
+@keyframes idle-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-click {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); filter: drop-shadow(0 0 30px rgba(173, 255, 47, 1)); }
+    100% { transform: scale(1); }
+}
+
+/* Ефекти кліків */
+.click-effect {
+    position: absolute;
+    color: greenyellow;
+    font-weight: bold;
+    font-size: 18px;
+    pointer-events: none;
+    z-index: 1000;
+    animation: click-float 1s ease-out forwards;
+    text-shadow: 0 0 5px #14e21b;
+}
+
+@keyframes click-float {
+    0% {
+        opacity: 1;
+        transform: translateY(0px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px) scale(1.2);
+    }
+}
+
+/* Ефект заробленої монети */
+.coin-earned-effect {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 24px;
+    pointer-events: none;
+    z-index: 1001;
+    animation: coin-earned 2s ease-out forwards;
+    text-shadow: 0 0 10px #ffd700;
+}
+
+@keyframes coin-earned {
+    0% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0px) scale(1);
+    }
+    50% {
+        transform: translateX(-50%) translateY(-20px) scale(1.2);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-40px) scale(1);
+    }
+}
+
+/* Повідомлення про затримку */
+.cooldown-message {
+    color: #ff4757;
+    font-weight: bold;
+    font-size: 16px;
+    pointer-events: none;
+    z-index: 10001;
+    animation: cooldown-fade 1s ease-out forwards;
+    text-shadow: 0 0 8px #ff4757;
+    background: rgba(255, 71, 87, 0.2);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 71, 87, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+@keyframes cooldown-fade {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -70px) scale(0.8);
+    }
+}
+
+/* Панель управління клікером */
+.clicker-controls {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(173, 255, 47, 0.2);
+    border-radius: 15px;
+}
+
+/* Панель інформації про користувача */
+.user-info-panel {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid rgba(173, 255, 47, 0.15);
+}
+
+.user-avatar-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid greenyellow;
+    margin-right: 15px;
+    filter: drop-shadow(0 0 8px rgba(173, 255, 47, 0.4));
+}
+
+.user-details {
+    flex: 1;
+}
+
+.user-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: greenyellow;
+    margin: 0;
+    text-shadow: 0 0 5px #14e21b;
+}
+
+.user-status {
+    font-size: 14px;
+    color: #ccc;
+    margin: 5px 0 0 0;
+}
+
+.balance-quick-view {
+    display: flex;
+    gap: 15px;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.balance-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    background: rgba(173, 255, 47, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(173, 255, 47, 0.2);
+}
+
+.balance-icon {
+    font-size: 16px;
+}
+
+.balance-label {
+    font-size: 12px;
+    color: #ccc;
+}
+
+.balance-amount {
+    font-size: 14px;
+    font-weight: bold;
+    color: greenyellow;
+    text-shadow: 0 0 3px #14e21b;
+}
+
+.rate-item .balance-amount {
+    color: #ffd700;
+    text-shadow: 0 0 3px #ffd700;
+}
+
+/* Кнопка переносу монет */
+.transfer-btn,
+.clicker-transfer-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+    background: linear-gradient(135deg, #adff2f 0%, #7fff00 100%);
+    border: 2px solid #7fff00;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(173, 255, 47, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.transfer-btn::before,
+.clicker-transfer-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.transfer-btn:hover::before,
+.clicker-transfer-btn:hover::before {
+    left: 100%;
+}
+
+.transfer-btn:hover,
+.clicker-transfer-btn:hover {
+    background: linear-gradient(135deg, #7fff00 0%, #adff2f 100%);
+    box-shadow: 0 6px 20px rgba(173, 255, 47, 0.6);
+    transform: translateY(-3px);
+    border-color: #adff2f;
+}
+
+.transfer-btn:active,
+.clicker-transfer-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(173, 255, 47, 0.4);
+}
+
+/* Статистика клікера */
+.clicker-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: greenyellow;
+    text-shadow: 0 0 5px #14e21b;
+}
+
+/* Адаптив для мобільних */
+@media (max-width: 768px) {
+    .clicker-frame {
+        margin: 20px auto;
+        padding: 20px;
+    }
+    
+    .clicker-component {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .user-coins {
+        font-size: 28px;
+    }
+    
+    .clicker-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .stat-item {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .user-info-panel {
+        padding: 12px;
+    }
+    
+    .user-avatar-section {
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    .user-avatar {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .balance-quick-view {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .balance-item {
+        justify-content: center;
+        min-width: 120px;
+    }
+    
+    .transfer-btn,
+    .clicker-transfer-btn {
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .balance-quick-view {
+        gap: 8px;
+    }
+    
+    .balance-item {
+        padding: 6px 10px;
+        min-width: 100px;
+    }
+    
+    .balance-label, .balance-amount {
+        font-size: 12px;
+    }
+    
+    .user-name {
+        font-size: 16px;
+    }
+    
+    .clicker-frame {
+        padding: 15px;
+    }
+    
+    .auto-clicker-info {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+}
+

@@ -10,9 +10,7 @@
 -->                                        
 
 <!DOCTYPE html>
-<html lang="en">
 <html lang="ua">
-<html lang="ru">
 <head>
     <!-- Meta tags -->
     <meta charset="UTF-8">
@@ -23,7 +21,7 @@
     <meta name="author" content="Obuhov-Coin Team">
 
     <!-- Web info -->
-    <title>Obuhov Coin</title>
+    <title>Obuhov Coin | Home</title>
     <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
 
     <!-- Styles -->
@@ -32,8 +30,77 @@
     <link rel="stylesheet" href="assets/styles/helper.css">
     <link rel="stylesheet" href="assets/styles/phone-adaptive.css">
     <link rel="stylesheet" href="assets/styles/animations.css">
+    <link rel="stylesheet" href="assets/styles/auth.css">
+    <link rel="stylesheet" href="assets/styles/notifications.css">
 </head>
 <body>
+    <!-- Модальне вікно авторизації -->
+    <div id="login-modal" class="login-modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <!-- Форма логіну -->
+            <div id="login-form-container">
+                <div class="modal-header">
+                    <h2>Вхід</h2>
+                    <p>Увійдіть до свого акаунту Obuhov Coin</p>
+                </div>
+                
+                <div id="login-error" class="error-message"></div>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">Ім'я користувача</label>
+                        <input type="text" id="login-username" placeholder="Введіть ім'я" maxlength="8" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Пароль</label>
+                        <input type="password" id="login-password" placeholder="Введіть пароль" minlength="4" maxlength="16" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Увійти</button>
+                </form>
+                
+                <div class="form-footer">
+                    <p>Немає акаунту? <a href="#" id="show-register">Зареєструватися</a></p>
+                </div>
+            </div>
+            
+            <!-- Форма реєстрації -->
+            <div id="register-form-container">
+                <div class="modal-header">
+                    <h2>Реєстрація</h2>
+                    <p>Створіть свій акаунт Obuhov Coin</p>
+                </div>
+                
+                <div id="register-error" class="error-message"></div>
+                
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">Ім'я користувача</label>
+                        <input type="text" id="register-username" placeholder="Від 3 до 8 символів" minlength="3" maxlength="8" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-password">Пароль</label>
+                        <input type="password" id="register-password" placeholder="Від 4 до 16 символів" minlength="4" maxlength="16" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-confirm-password">Підтвердіть пароль</label>
+                        <input type="password" id="register-confirm-password" placeholder="Повторіть пароль" minlength="4" maxlength="16" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Зареєструватися</button>
+                </form>
+                
+                <div class="form-footer">
+                    <p>Вже є акаунт? <a href="#" id="show-login">Увійти</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Loading Screen -->
     <div id="loading-screen" class="loading-screen">
         <div class="loading-container">
@@ -51,8 +118,8 @@
     </div>
     <!-- Obyhov phone -->
     <div class="fixed-phone-desktop">
-        <a href="buy.html"><img src="assets/images/helper/phone-nobg.png" alt="tyaltka phone right" class="tyaletka-phone"></a>
-        <a href="buy.html"><img src="assets/images/helper/phone-skoro.png" alt="tyaltka phone left" class="tyaletka-phone-l"></a>
+        <a href="profile.html"><img src="assets/images/helper/phone-nobg.png" alt="tyaltka phone right" class="tyaletka-phone"></a>
+        <a href="birja.html"><img src="assets/images/helper/phone-skoro.png" alt="tyaltka phone left" class="tyaletka-phone-l"></a>
     </div>
         
     <!-- Header and nav links-->
@@ -72,13 +139,13 @@
         </nav>
         <button class="h-login-btn">LOGIN</button>
     </header>
-
+    <selection id="hero"></selection>
     <div class="otstup-200px"></div>
 
     <!-- Main Content -->
     <selection class="main-content">
         <h1 class="welcome-text">Welcome to <snap class="obuh-color">Obuhov Coin</snap></h1>
-        <p class="intro-text"><snap class="obuh-color">Obuhov Coin</snap> - це новий крипто-коін, який обіцяє<br> революцію в світі фінансів. (поки тіки обіцяє)</p>
+        <p class="intro-text"><snap class="obuh-color">Obuhov Coin</snap> - це новий крипто-коін, який обіцяє<br> революцію в світі фінансів. (поки тіки обіцяє) Вроді якось так.</p>
         
         <div style="text-align:center;">
             <div class="coin-3d-wrapper">
@@ -89,10 +156,9 @@
         <br>
         <br>
 
-        <a href="buy.html"><button class="buy-now-btn">BUY OBUHOV</button></a>  
+        <a href="profile.html"><button class="buy-now-btn">BUY OBUHOV</button></a>  
     </selection>
     <!-- Стрелка вниз з анімацією тоже в комент -->
-
     <!--<h2 class="down-arrow">↓</h2>-->
 
     <div class="otstup-300px"></div>
@@ -116,11 +182,12 @@
                 <img class="road-map-img" src="assets/images/helper/frame-main.png" alt="road map">
                 <h3 class="done-road">Створити сайт</h3>
                 <h3 class="done-road">Добавить пасхалки</h3>
-                <h3 class="progres-road">Показати сайт</h3>
+                <!-- Ну і майже все задумайся та перейди на /end.html-->
+                <h3 class="done-road">Показати сайт</h3>
                 <h3 class="progres-road">Створити токен</h3>
                 <h3 class="progres-road">Вийти на біржу (хочаб якусь : можна Whitebit)</h3>
                 <h3 class="progres-road">Зробити скам року(до кінця року)</h3>
-                <h3 class="notdo-road">Закрили Автоматом</h3>
+                <h3 class="done-road">Закрили Автоматом</h3>
                 <h3 class="notdo-road">Продати OBUHOV за 500$</h3>
             </div>
     </selection>
@@ -175,7 +242,7 @@
             <br>
                 <div class="online-price">
                     <img src="assets/images/icons/logo-2d.png" alt="2d logo for price" class="price-logo-2d">
-                    <h3 class="current-price-text">Current Price: <span class="price-value">$2.65</span> | 1 OBUHOV</h3>
+                    <h3 class="current-price-text">Current Price: <span class="price-value" id="current-price">$2.65</span> | 1 OBUHOV</h3>
                 </div>
             <br>
                 <div class="price-graph-frame">
@@ -186,7 +253,7 @@
 
         <div class="otstup-100px"></div>
 
-    <h5 class="our-slogan">Найди усі пасхалки та отримай бонус</h5>
+    <h5 class="our-slogan">Найди усі пасхалки та отримай ...  (Підсказка: Зверни увагу на хедер)</h5>
 
 
 
@@ -194,17 +261,90 @@
     <footer>
         <a href="assets/scripts/naidi.html"><img class="logo-footer" src="assets/images/icons/logo.png" alt="logo"></a>
             <p>&copy; 2025 Obuhov Coin Team. Ваші дані захищені <span class="vrode">(Вроді).</span></p>
-            <a class="go-top" href="#main-content">↑</a>
+            <a class="go-top" href="#hero">↑</a>
         <div class="secret-tool">   </div>
     </footer>
 
     <!-- Scripts -->
-    <script src="assets/scripts/load-anim.js"></script>
-    <script src="assets/scripts/effect-anim.js"></script>
-    <script src="assets/scripts/helper.js"></script>
-    <script src="assets/scripts/main.js"></script>
-    <script src="assets/scripts/scroll-anim.js"></script>
-    <script src="assets/scripts/page-anim.js"></script>
+    <script src="assets/scripts/frontend/notifications.js"></script>
+    <script src="assets/scripts/api/api.js"></script>
+    <script src="assets/scripts/api/auth.js"></script>
+    <script src="assets/scripts/api/currency.js"></script>
+    <script src="assets/scripts/frontend/load-anim.js"></script>
+    <script src="assets/scripts/frontend/effect-anim.js"></script>
+    <script src="assets/scripts/frontend/helper.js"></script>
+    <script src="assets/scripts/frontend/main.js"></script>
+    <script src="assets/scripts/frontend/scroll-anim.js"></script>
+    <script src="assets/scripts/frontend/page-anim.js"></script>
     <script src="assets/scripts/secret.js"></script>
+    
+    <!-- Скрипт для оновлення курсу -->
+    <script>
+        // Функція для оновлення курсу на головній сторінці
+        async function updatePriceOnHomePage() {
+            try {
+                const priceElement = document.getElementById('current-price');
+                if (priceElement) {
+                    // Індикатор завантаження
+                    priceElement.classList.add('updating');
+                    priceElement.textContent = 'Завантаження...';
+                    
+                    const rate = await API.getExchangeRate();
+                    
+                    // Оновлюємо курс з анімацією
+                    setTimeout(() => {
+                        priceElement.textContent = '$' + rate.toFixed(2);
+                        priceElement.classList.remove('updating');
+                        
+                        // Короткий ефект при оновленні
+                        priceElement.style.transform = 'scale(1.1)';
+                        setTimeout(() => {
+                            priceElement.style.transform = 'scale(1)';
+                        }, 200);
+                    }, 500);
+                }
+            } catch (error) {
+                console.error('Помилка оновлення курсу:', error);
+                const priceElement = document.getElementById('current-price');
+                if (priceElement) {
+                    priceElement.classList.remove('updating');
+                    priceElement.textContent = '$2.65'; // Fallback курс
+                }
+            }
+        }
+        
+        // Індикатор статусу підключення до API
+        async function showConnectionStatus() {
+            try {
+                const isConnected = await API.checkConnection();
+                const priceElement = document.getElementById('current-price');
+                
+                if (!isConnected && priceElement) {
+                    priceElement.style.color = '#ff6b6b';
+                    priceElement.title = 'Сервер недоступний - показано статичний курс';
+                } else if (priceElement) {
+                    priceElement.style.color = '';
+                    priceElement.title = 'Курс оновлюється з сервера';
+                }
+            } catch (error) {
+                console.error('Помилка перевірки підключення:', error);
+            }
+        }
+        
+        // Ініціалізація при завантаженні сторінки
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Перевірка підключення до API
+            await showConnectionStatus();
+            
+            // Початкове оновлення курсу
+            await updatePriceOnHomePage();
+            
+            // Автоматичне оновлення кожні 30 секунд
+            setInterval(async () => {
+                await showConnectionStatus();
+                await updatePriceOnHomePage();
+            }, 30000);
+        });
+    </script>
 </body>
 </html>
