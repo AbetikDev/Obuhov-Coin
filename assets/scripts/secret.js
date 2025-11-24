@@ -18,6 +18,7 @@
 // Real? you don`t know?
 // ahhhh (>_<)
 // its https://abetik.space
+// ** Bruh im remove code(( come /end.html
 
 // now bye :D
 // and keep secret! :D
@@ -46,6 +47,7 @@
 // Серйозно? Ти не знаєш?
 // аааа (>_<)
 // Це https://abetik.space
+// ** Брух, я видалив з кода (( заходь на /end.html
 
 // Ну все, бувай :D
 // І тримай це в секреті! :D
