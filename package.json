@@ -32,6 +32,8 @@
     "cors": "^2.8.5",
     "experss": "^0.0.1-security",
     "express": "^5.1.0",
+    "get-port": "^7.1.0",
+    "node-fetch": "^3.3.2",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
   }

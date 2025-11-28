@@ -3,9 +3,11 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const path = require('path');
+const getPort = require('get-port');
+const fetch = require('node-fetch');
 
 const app = express();
-const PORT = 22;
+let PORT = process.env.PORT || 22;
 
 // Middleware
 app.use(cors());
@@ -358,34 +360,32 @@ app.put('/api/exchange-rate', (req, res) => {
     });
 });
 
-// Визначення реальної IP-адреси
-const os = require('os');
-function getLocalIP() {
-    const interfaces = os.networkInterfaces();
-    for (const name of Object.keys(interfaces)) {
-        for (const iface of interfaces[name]) {
-            if (iface.family === 'IPv4' && !iface.internal) {
-                return iface.address;
-            }
+// Запуск сервера з автоматичним вибором порту та отриманням публічного IP
+async function startServer() {
+    PORT = await getPort({ port: getPort.makeRange(22, 65535) });
+    app.listen(PORT, '0.0.0.0', async () => {
+        let publicIP = 'невідомо';
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            publicIP = data.ip;
+        } catch (e) {
+            publicIP = 'помилка отримання IP';
         }
-    }
-    return 'localhost';
+        console.log('');
+        console.log('🚀 ================================================');
+        console.log('🪙  Obuhov Coin Server запущено!');
+        console.log('🌐  Локально: http://localhost:' + PORT);
+        console.log('🌍  Публічно: http://' + publicIP + ':' + PORT);
+        console.log('📊  База даних: SQLite (obuhov_coin.db)');
+        console.log('⚡  Порт: ' + PORT);
+        console.log('🌐  Доступ: З усіх IP адрес (0.0.0.0)');
+        console.log('🚀 ================================================');
+        console.log('');
+    });
 }
 
-// Запуск сервера
-app.listen(PORT, '0.0.0.0', () => {
-    const localIP = getLocalIP();
-    console.log('');
-    console.log('🚀 ================================================');
-    console.log('🪙  Obuhov Coin Server запущено!');
-    console.log('🌐  Локально: http://localhost:' + PORT);
-    console.log('🌍  Публічно: http://' + localIP + ':' + PORT);
-    console.log('📊  База даних: SQLite (obuhov_coin.db)');
-    console.log('⚡  Порт: ' + PORT);
-    console.log('🌐  Доступ: З усіх IP адрес (0.0.0.0)');
-    console.log('🚀 ================================================');
-    console.log('');
-});
+startServer();
 
 // Закриття БД при зупинці сервера
 process.on('SIGINT', () => {
