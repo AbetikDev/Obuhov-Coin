@@ -354,7 +354,7 @@ app.put('/api/exchange-rate', (req, res) => {
 });
 
 // Запуск сервера на фіксованому порту
-const PORT = process.env.PORT || 22;
+const PORT = process.env.PORT || 28015;
 const HOST = '0.0.0.0';
 
 app.listen(PORT, HOST, () => {

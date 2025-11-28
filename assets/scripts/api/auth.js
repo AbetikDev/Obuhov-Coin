@@ -66,7 +66,7 @@ function showServerWarning() {
         font-weight: bold;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     `;
-    warning.innerHTML = '⚠️ Сервер недоступний! Запустіть start.bat';
+    warning.innerHTML = '⚠️ Нестабільне з\'єднання з сервером!';
     document.body.appendChild(warning);
     
     setTimeout(() => warning.remove(), 5000);
