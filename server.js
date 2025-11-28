@@ -3,12 +3,8 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const path = require('path');
-const getPort = require('get-port');
-const fetch = require('node-fetch');
 
 const app = express();
-const getPort = require('get-port');
-const fetch = require('node-fetch');
 
 // Middleware
 app.use(cors());
@@ -18,16 +14,15 @@ app.use(express.static(path.join(__dirname)));
 // Ініціалізація бази даних SQLite
 const db = new sqlite3.Database('./obuhov_coin.db', (err) => {
     if (err) {
-        console.error('❌ Помилка підключення до БД:', err.message);
+        console.error('Помилка підключення до БД:', err.message);
     } else {
-        console.log('✅ Підключено до бази даних SQLite');
+        console.log('Підключено до бази даних SQLite');
         initializeDatabase();
     }
 });
 
 // Створення таблиць
 function initializeDatabase() {
-    // Таблиця користувачів
     db.run(`
         CREATE TABLE IF NOT EXISTS users (
             username TEXT PRIMARY KEY,
@@ -41,14 +36,13 @@ function initializeDatabase() {
         )
     `, (err) => {
         if (err) {
-            console.error('❌ Помилка створення таблиці users:', err.message);
+            console.error('Помилка створення таблиці users:', err.message);
         } else {
-            console.log('✅ Таблиця users готова');
+            console.log('Таблиця users готова');
             createDefaultAdmin();
         }
     });
 
-    // Таблиця транзакцій
     db.run(`
         CREATE TABLE IF NOT EXISTS transactions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,13 +57,12 @@ function initializeDatabase() {
         )
     `, (err) => {
         if (err) {
-            console.error('❌ Помилка створення таблиці transactions:', err.message);
+            console.error('Помилка створення таблиці transactions:', err.message);
         } else {
-            console.log('✅ Таблиця transactions готова');
+            console.log('Таблиця transactions готова');
         }
     });
 
-    // Таблиця ордерів
     db.run(`
         CREATE TABLE IF NOT EXISTS market_orders (
             id TEXT PRIMARY KEY,
@@ -82,13 +75,12 @@ function initializeDatabase() {
         )
     `, (err) => {
         if (err) {
-            console.error('❌ Помилка створення таблиці market_orders:', err.message);
+            console.error('Помилка створення таблиці market_orders:', err.message);
         } else {
-            console.log('✅ Таблиця market_orders готова');
+            console.log('Таблиця market_orders готова');
         }
     });
 
-    // Таблиця налаштувань
     db.run(`
         CREATE TABLE IF NOT EXISTS settings (
             key TEXT PRIMARY KEY,
@@ -96,9 +88,9 @@ function initializeDatabase() {
         )
     `, (err) => {
         if (err) {
-            console.error('❌ Помилка створення таблиці settings:', err.message);
+            console.error('Помилка створення таблиці settings:', err.message);
         } else {
-            console.log('✅ Таблиця settings готова');
+            console.log('Таблиця settings готова');
             setDefaultExchangeRate();
         }
     });
@@ -108,16 +100,16 @@ function initializeDatabase() {
 function createDefaultAdmin() {
     db.get('SELECT * FROM users WHERE username = ?', ['admin'], (err, row) => {
         if (err) {
-            console.error('❌ Помилка перевірки адміна:', err.message);
+            console.error('Помилка перевірки адміна:', err.message);
         } else if (!row) {
             db.run(`
                 INSERT INTO users (username, password, coins, usd, frozenCoins, frozenUSD, isAdmin, registeredAt)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             `, ['admin', 'admin', 0, 10000, 0, 0, 1, new Date().toISOString()], (err) => {
                 if (err) {
-                    console.error('❌ Помилка створення адміна:', err.message);
+                    console.error('Помилка створення адміна:', err.message);
                 } else {
-                    console.log('✅ Адмін створено: admin/admin');
+                    console.log('Адмін створено: admin/admin');
                 }
             });
         }
@@ -128,15 +120,15 @@ function createDefaultAdmin() {
 function setDefaultExchangeRate() {
     db.get('SELECT * FROM settings WHERE key = ?', ['exchangeRate'], (err, row) => {
         if (err) {
-            console.error('❌ Помилка перевірки курсу:', err.message);
+            console.error('Помилка перевірки курсу:', err.message);
         } else if (!row) {
             db.run(`
                 INSERT INTO settings (key, value) VALUES (?, ?)
             `, ['exchangeRate', '2.65'], (err) => {
                 if (err) {
-                    console.error('❌ Помилка встановлення курсу:', err.message);
+                    console.error('Помилка встановлення курсу:', err.message);
                 } else {
-                    console.log('✅ Курс встановлено: $2.65');
+                    console.log('Курс встановлено: 2.65');
                 }
             });
         }
@@ -156,7 +148,7 @@ app.get('/api/users', (req, res) => {
     });
 });
 
-// Отримання користувача
+// Отримання конкретного користувача
 app.get('/api/users/:username', (req, res) => {
     db.get('SELECT * FROM users WHERE username = ?', [req.params.username], (err, row) => {
         if (err) {
@@ -169,10 +161,10 @@ app.get('/api/users/:username', (req, res) => {
     });
 });
 
-// Реєстрація користувача
+// Реєстрація
 app.post('/api/register', (req, res) => {
     const { username, password } = req.body;
-    
+
     if (!username || !password) {
         return res.status(400).json({ error: 'Заповніть всі поля' });
     }
@@ -196,7 +188,7 @@ app.post('/api/register', (req, res) => {
 // Логін
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
-    
+
     db.get('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (err, row) => {
         if (err) {
             res.status(500).json({ error: err.message });
@@ -211,7 +203,7 @@ app.post('/api/login', (req, res) => {
 // Оновлення користувача
 app.put('/api/users/:username', (req, res) => {
     const { coins, usd, frozenCoins, frozenUSD, isAdmin } = req.body;
-    
+
     db.run(`
         UPDATE users 
         SET coins = ?, usd = ?, frozenCoins = ?, frozenUSD = ?, isAdmin = ?
@@ -239,17 +231,17 @@ app.delete('/api/users/:username', (req, res) => {
 // Отримання транзакцій
 app.get('/api/transactions', (req, res) => {
     const { username } = req.query;
-    
+
     let query = 'SELECT * FROM transactions';
     let params = [];
-    
+
     if (username) {
         query += ' WHERE fromUser = ? OR toUser = ?';
         params = [username, username];
     }
-    
+
     query += ' ORDER BY timestamp DESC';
-    
+
     db.all(query, params, (err, rows) => {
         if (err) {
             res.status(500).json({ error: err.message });
@@ -262,7 +254,7 @@ app.get('/api/transactions', (req, res) => {
 // Додавання транзакції
 app.post('/api/transactions', (req, res) => {
     const { type, fromUser, toUser, coins, usd, fee, description } = req.body;
-    
+
     db.run(`
         INSERT INTO transactions (type, fromUser, toUser, coins, usd, fee, timestamp, description)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -278,27 +270,27 @@ app.post('/api/transactions', (req, res) => {
 // Отримання ордерів
 app.get('/api/orders', (req, res) => {
     const { type, username } = req.query;
-    
+
     let query = 'SELECT * FROM market_orders';
     let params = [];
     let conditions = [];
-    
+
     if (type) {
         conditions.push('type = ?');
         params.push(type);
     }
-    
+
     if (username) {
         conditions.push('username = ?');
         params.push(username);
     }
-    
+
     if (conditions.length > 0) {
         query += ' WHERE ' + conditions.join(' AND ');
     }
-    
+
     query += ' ORDER BY price ' + (type === 'buy' ? 'DESC' : 'ASC');
-    
+
     db.all(query, params, (err, rows) => {
         if (err) {
             res.status(500).json({ error: err.message });
@@ -311,7 +303,7 @@ app.get('/api/orders', (req, res) => {
 // Створення ордера
 app.post('/api/orders', (req, res) => {
     const { id, type, username, amount, price, total } = req.body;
-    
+
     db.run(`
         INSERT INTO market_orders (id, type, username, amount, price, total, timestamp)
         VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -349,7 +341,7 @@ app.get('/api/exchange-rate', (req, res) => {
 // Оновлення курсу
 app.put('/api/exchange-rate', (req, res) => {
     const { rate } = req.body;
-    
+
     db.run(`
         INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)
     `, ['exchangeRate', rate.toString()], (err) => {
@@ -361,40 +353,27 @@ app.put('/api/exchange-rate', (req, res) => {
     });
 });
 
-// Автоматичний запуск на білому IP та відкритому порту
-async function startServer() {
-    let publicIP = 'невідомо';
-    try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        publicIP = data.ip;
-    } catch (e) {
-        publicIP = 'помилка отримання IP';
-    }
-    const PORT = await getPort({ port: getPort.makeRange(1024, 65535) });
-    app.listen(PORT, publicIP, () => {
-        console.log('');
-        console.log('🚀 ================================================');
-        console.log('🪙  Obuhov Coin Server запущено!');
-        console.log('🌐  Локально: http://localhost:' + PORT);
-        console.log('🌍  Публічно: http://' + publicIP + ':' + PORT);
-        console.log('📊  База даних: SQLite (obuhov_coin.db)');
-        console.log('⚡  Порт: ' + PORT);
-        console.log('🌐  Доступ: На білому IP (' + publicIP + ')');
-        console.log('🚀 ================================================');
-        console.log('');
-    });
-}
+// Запуск сервера на фіксованому порту
+const PORT = process.env.PORT || 22;
+const HOST = '0.0.0.0';
 
-startServer();
+app.listen(PORT, HOST, () => {
+    console.log('==============================================');
+    console.log('Obuhov Coin Server запущено');
+    console.log('Локально:  http://localhost:' + PORT);
+    console.log('Ззовні:    http://' + HOST + ':' + PORT + ' (якщо порт відкритий у фаєрволі)');
+    console.log('База даних: SQLite (obuhov_coin.db)');
+    console.log('Порт: ' + PORT);
+    console.log('==============================================');
+});
 
-// Закриття БД при зупинці сервера
+// Закриття БД при зупинці
 process.on('SIGINT', () => {
     db.close((err) => {
         if (err) {
-            console.error('❌ Помилка закриття БД:', err.message);
+            console.error('Помилка закриття БД:', err.message);
         } else {
-            console.log('✅ База даних закрита');
+            console.log('База даних закрита');
         }
         process.exit(0);
     });
