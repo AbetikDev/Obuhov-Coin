@@ -7,7 +7,8 @@ const getPort = require('get-port');
 const fetch = require('node-fetch');
 
 const app = express();
-let PORT = process.env.PORT || 22;
+const getPort = require('get-port');
+const fetch = require('node-fetch');
 
 // Middleware
 app.use(cors());
@@ -360,18 +361,18 @@ app.put('/api/exchange-rate', (req, res) => {
     });
 });
 
-// Запуск сервера з автоматичним вибором порту та отриманням публічного IP
+// Автоматичний запуск на білому IP та відкритому порту
 async function startServer() {
-    PORT = await getPort({ port: getPort.makeRange(22, 65535) });
-    app.listen(PORT, '0.0.0.0', async () => {
-        let publicIP = 'невідомо';
-        try {
-            const response = await fetch('https://api.ipify.org?format=json');
-            const data = await response.json();
-            publicIP = data.ip;
-        } catch (e) {
-            publicIP = 'помилка отримання IP';
-        }
+    let publicIP = 'невідомо';
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        publicIP = data.ip;
+    } catch (e) {
+        publicIP = 'помилка отримання IP';
+    }
+    const PORT = await getPort({ port: getPort.makeRange(1024, 65535) });
+    app.listen(PORT, publicIP, () => {
         console.log('');
         console.log('🚀 ================================================');
         console.log('🪙  Obuhov Coin Server запущено!');
@@ -379,7 +380,7 @@ async function startServer() {
         console.log('🌍  Публічно: http://' + publicIP + ':' + PORT);
         console.log('📊  База даних: SQLite (obuhov_coin.db)');
         console.log('⚡  Порт: ' + PORT);
-        console.log('🌐  Доступ: З усіх IP адрес (0.0.0.0)');
+        console.log('🌐  Доступ: На білому IP (' + publicIP + ')');
         console.log('🚀 ================================================');
         console.log('');
     });
