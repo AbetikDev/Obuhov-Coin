@@ -1,6 +1,6 @@
 // API клієнт для роботи з сервером Якщо хостити то міняти на айпі хоста
 // Динамічно визначаємо адресу API з window.location
-const API_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port ? window.location.port : '22'}/api`;
+const API_URL = 'http://obuhov-coin.xyz/api';
 
 // Клас для роботи з API
 class API {
