@@ -1,5 +1,5 @@
 // API клієнт для роботи з сервером Якщо хостити то міняти на айпі хоста
-const API_URL = 'http://localhost:28015/api';
+const API_URL = 'http://localhost:22/api';
 
 // Клас для роботи з API
 class API {

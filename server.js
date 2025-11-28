@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 28015;
+const PORT = 22;
 
 // Middleware
 app.use(cors());
@@ -358,13 +358,28 @@ app.put('/api/exchange-rate', (req, res) => {
     });
 });
 
+// Визначення реальної IP-адреси
+const os = require('os');
+function getLocalIP() {
+    const interfaces = os.networkInterfaces();
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                return iface.address;
+            }
+        }
+    }
+    return 'localhost';
+}
+
 // Запуск сервера
 app.listen(PORT, '0.0.0.0', () => {
+    const localIP = getLocalIP();
     console.log('');
     console.log('🚀 ================================================');
     console.log('🪙  Obuhov Coin Server запущено!');
     console.log('🌐  Локально: http://localhost:' + PORT);
-    console.log('🌍  Публічно: http://176.36.103.4:' + PORT);
+    console.log('🌍  Публічно: http://' + localIP + ':' + PORT);
     console.log('📊  База даних: SQLite (obuhov_coin.db)');
     console.log('⚡  Порт: ' + PORT);
     console.log('🌐  Доступ: З усіх IP адрес (0.0.0.0)');
