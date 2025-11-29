@@ -157,3 +157,8 @@ footer {
 .otstup-50px {
     height: 50px;
 }
+/* Приховати рамку/підсвічування при кліку на фото-коін */
+.clicker-component {
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
